@@ -8,27 +8,22 @@ class Cart < ActiveRecord::Base
 
 
   def amount_of_books
-    cart_book_items.all.select do
-      |item| item.cart_id == id
-    end.inject 0 do
-      | acum, item | acum+item.amount_of_books
-    end
+    cart_book_items.map{ | item | item.amount_of_books }.reduce(0, :+)
   end
 
-  def add(a_book,an_amount)
-    if(cart_book_items.find_by(id,a_book.id).nil?)
-    cart_book_items.create!({book_id:a_book.id, cart_id:id, amount_of_books: an_amount})
-    else
-    cart_book_items.find_by(id,a_book.id).update_attribute(:amount_of_books, (cart_book_items.find_by(id,a_book.id).amount_of_books)+an_amount)
+  def add(a_book, an_amount)
+    item = cart_book_items.detect(proc { cart_book_items.create!({book: a_book, amount_of_books: 0 }) }) do
+      | item | item.book == a_book
     end
+
+    item.amount_of_books += an_amount
+    item.save!
   end
 
   def occurrences_of(a_book)
-    cart_book_items.find_by(id,a_book.id).amount_of_books
+    item = cart_book_items.detect(){ | item | item.book == a_book }
+    item ? item.amount_of_books : 0
   end
-
-
-
 
 
 end

@@ -8,7 +8,7 @@ module CreditCardFactoryForTesting
   end
 
   def a_valid_expiration_date
-    MonthYear.new(12, 3010)
+    Date.new(3030,12,1)
   end
 
   def a_valid_credit_card

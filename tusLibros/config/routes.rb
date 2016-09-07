@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  get 'list_cart' => 'cart#list_cart'
+  get 'carts/:id/list' => 'cart#list_cart'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

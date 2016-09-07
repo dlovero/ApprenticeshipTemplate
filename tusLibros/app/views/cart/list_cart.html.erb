@@ -1,11 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Lets see what this pages holds for me:</title>
-    <%= @message %>
-</head>
-<body>
+<title>This is a Cart: <%= cart.id %></title>
 
-</body>
-</html>
+<table>
+  <thead>
+  <tr>
+    <th>Title</th>
+    <th>Cantidad</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% cart.cart_book_items.each do | item | %>
+      <tr>
+        <td><%= item.book_id %></td>
+        <td><%= item.amount_of_books %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
