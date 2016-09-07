@@ -1,5 +1,5 @@
 class Cart < ActiveRecord::Base
-  has_many :cart_book_items
+  has_many :items
   has_many :books, through: :cart_book_items
 
   def empty?

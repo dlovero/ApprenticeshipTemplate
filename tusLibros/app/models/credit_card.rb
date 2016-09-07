@@ -14,9 +14,11 @@ class CreditCard < ActiveRecord::Base
 
   validates :credit_card_number, format: {with: /[0-9]{16}/,
                                           message: CreditCard.error_message_for_invalid_credit_card_number}
-  validates :credit_card_owner, format: {with: /[a-zA-Z ]{1,30}/,
-                                         message: CreditCard.error_message_for_invalid_credit_card_owner},
-            length:{maximum: 30, message: CreditCard.error_message_for_invalid_credit_card_owner}
+
+  validates :credit_card_owner,
+            format: {with: /[a-zA-Z ]{1,30}/, message: CreditCard.error_message_for_invalid_credit_card_owner},
+            length: {maximum: 30, message: CreditCard.error_message_for_invalid_credit_card_owner}
+
   validate :expiration_of_credit_card
 
 
