@@ -1,5 +1,5 @@
 require 'rails_helper'
-require_relative 'credit_card_factory_for_testing'
+require_relative '../../spec/credit_card_factory_for_testing'
 require_relative '../../app/models/credit_card'
 
 RSpec.configure do |c|

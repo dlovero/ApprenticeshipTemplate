@@ -11,18 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160907203238) do
+ActiveRecord::Schema.define(version: 20160908200042) do
 
   create_table "books", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string   "title"
     t.string   "isbn"
+    t.float    "price"
   end
 
   create_table "carts", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "sale_id"
+    t.integer  "user_id"
   end
 
   create_table "credit_cards", force: :cascade do |t|
@@ -40,12 +43,19 @@ ActiveRecord::Schema.define(version: 20160907203238) do
   end
 
   create_table "sales", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.integer  "credit_card_id"
+    t.float    "total_price"
+    t.integer  "cart_id"
+    t.integer  "user_id"
   end
 
-  create_table "table_for_sales", force: :cascade do |t|
-    t.float "total_price"
+  create_table "users", force: :cascade do |t|
+    t.string   "user_name"
+    t.string   "password"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

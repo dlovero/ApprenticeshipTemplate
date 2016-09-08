@@ -1,6 +1,8 @@
 class Cart < ActiveRecord::Base
   has_many :items
-  has_many :books, through: :cart_book_items
+  has_many :books, through: :items
+  belongs_to :sale
+  belongs_to :cart
 
   def empty?
     books.empty?
@@ -8,12 +10,13 @@ class Cart < ActiveRecord::Base
 
 
   def amount_of_books
-    cart_book_items.map{ | item | item.amount_of_books }.reduce(0, :+)
+    items.map { |item| item.amount_of_books }.reduce(0, :+)
   end
 
   def add(a_book, an_amount)
-    item = cart_book_items.detect(proc { cart_book_items.create!({book: a_book, amount_of_books: 0 }) }) do
-      | item | item.book == a_book
+    item = items.detect(proc { items.create!({book: a_book, amount_of_books: 0}) }) do
+    |item|
+      item.book == a_book
     end
 
     item.amount_of_books += an_amount
@@ -21,8 +24,12 @@ class Cart < ActiveRecord::Base
   end
 
   def occurrences_of(a_book)
-    item = cart_book_items.detect(){ | item | item.book == a_book }
+    item = items.detect() { |item| item.book == a_book }
     item ? item.amount_of_books : 0
+  end
+
+  def total_price
+    items.map { |an_item| self.occurrences_of(an_item.book) * an_item.book.price }.inject(0,:+)
   end
 
 
