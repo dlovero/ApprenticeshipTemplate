@@ -1,6 +1,13 @@
 Rails.application.routes.draw do
 
+
+  get '/' => 'home#index'
+
   get 'carts/:id/list' => 'cart#list_cart'
+
+
+
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
