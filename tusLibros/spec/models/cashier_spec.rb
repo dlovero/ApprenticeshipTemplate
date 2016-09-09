@@ -10,7 +10,7 @@ describe Cashier do
     let(:a_client) { User.create(user_name: 'Chichi Peralta', password: '1234567') }
     let(:merchant_processor) { instance_spy(MerchantProcessor) }
     let(:cashier) { Cashier.new(merchant_processor) }
-    let(:a_credit_card) { a_valid_credit_card }
+    let(:a_credit_card) { CreditCard.create!(credit_card_owner: a_valid_credit_card_owner,credit_card_number: a_valid_credit_card_number,expiration_date: a_valid_expiration_date, user_id:a_client.id)}
     let(:cart) { Cart.create(user_id: a_client.id) }
     let(:a_book) { Book.create(isbn: '1234227323', price: 14) }
     let(:another_book) { Book.create(isbn: '1231231231', price: 15) }

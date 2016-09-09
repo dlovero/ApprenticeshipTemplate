@@ -1,4 +1,5 @@
 class CreditCard < ActiveRecord::Base
+  belongs_to :user
 
   def self.error_message_for_invalid_credit_card_number
     'Invalid credit card number'

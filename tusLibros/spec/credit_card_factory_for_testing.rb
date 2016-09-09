@@ -11,7 +11,4 @@ module CreditCardFactoryForTesting
     Date.new(3030,12,1)
   end
 
-  def a_valid_credit_card
-    CreditCard.create!(credit_card_owner: a_valid_credit_card_owner,credit_card_number: a_valid_credit_card_number,expiration_date: a_valid_expiration_date)
-  end
 end

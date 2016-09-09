@@ -5,7 +5,6 @@ class Sale < ActiveRecord::Base
 
   def items
     cart.items
-
   end
 
 end
