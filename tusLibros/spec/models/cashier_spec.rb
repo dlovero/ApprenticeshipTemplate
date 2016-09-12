@@ -57,9 +57,9 @@ describe Cashier do
 
 
       it 'the sale should be the last of this client' do
-        sale = Sale.find_by(a_client.id)
-        expect(sale.items.first.book.isbn).to eq(a_book.isbn)
-        expect(sale.items.second.book.isbn).to eq(another_book.isbn)
+        sale = Sale.find_by(user_id:a_client.id)
+        expect(sale.items.first.book_id).to eq(a_book.id)
+        expect(sale.items.second.book_id).to eq(another_book.id)
         expect(sale.user_id).to eq(a_client.id)
         expect(sale.total_price).to eq total_price_of_books
       end

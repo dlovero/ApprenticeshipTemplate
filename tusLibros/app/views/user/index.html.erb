@@ -1,0 +1,17 @@
+<h1>Welcome to: Tus Libros e-commerce web app</h1>
+
+<section class="loginform cf">
+
+  <% if my_error == 'user' %>
+      <div style="border: 1px solid #FF0000; background: #FFDDDD; padding:3px;">Wrong username or password</div>
+  <% end %>
+  <%= form_tag action: "login" do %>
+        <ul>
+          <li><label for="usermail">User</label>
+            <input name="username" placeholder="yourusername" required></li>
+          <li><label for="password">Password</label>
+            <input type="password" name="password" placeholder="yourpassword" required></li>
+          <input type="submit" value="Login">
+        </ul>
+  <% end%>
+</section>

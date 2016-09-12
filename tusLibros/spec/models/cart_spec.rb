@@ -12,7 +12,7 @@ RSpec.describe Cart do
 
 
     it 'should have a zero amount of books' do
-      expect(a_cart.amount_of_books).to be 0
+      expect(a_cart.total_amount_of_books).to be 0
     end
 
     context 'and you add it a book' do
@@ -26,7 +26,7 @@ RSpec.describe Cart do
       end
 
       it 'should have 1 book' do
-        expect(a_cart.amount_of_books).to eq 1
+        expect(a_cart.total_amount_of_books).to eq 1
       end
 
       context 'and you add other book' do
@@ -35,7 +35,7 @@ RSpec.describe Cart do
         end
 
         it 'should have 2 books' do
-          expect(a_cart.amount_of_books).to eq 2
+          expect(a_cart.total_amount_of_books).to eq 2
         end
 
 

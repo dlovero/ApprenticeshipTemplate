@@ -11,7 +11,7 @@
   <% cart.cart_book_items.each do | item | %>
       <tr>
         <td><%= item.book_id %></td>
-        <td><%= item.amount_of_books %></td>
+        <td><%= item.total_amount_of_books %></td>
       </tr>
   <% end %>
   </tbody>

@@ -1,0 +1,76 @@
+<head>
+  <title>Menu Desplegable</title>
+  <style type="text/css">
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      font-family: Helvetica;
+      width: 480px;
+      margin: 0 auto;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    #menu li > a {
+      background-color: grey;
+      color: white;
+      padding: 10px;
+      display: block;
+      text-decoration: none;
+      min-width: 100px;
+    }
+
+    #menu li > a:hover {
+      color: #000;
+      background-color: #eaeaea;
+    }
+
+    #menu > li {
+      float: left;
+      text-align: center
+    }
+
+    #menu > li > ul {
+      display: none;
+    }
+
+    #menu > li:hover > ul {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <nav>
+    <ul id="menu">
+      <li><a href="/home">Inicio</a></li>
+      <li><a>Compras</a>
+        <ul>
+          <li><a href="/new">Nueva compra</a></li>
+          <li><a href="">Listar compras</a></li>
+        </ul>
+      </li>
+      <li><a href="">Nosotros</a></li>
+      <li><a href="">Contacto</a></li>
+    </ul>
+  </nav>
+</header>
+
+<% if option == 'new_cart' %>
+    <header><%=button_tag "Create Cart",action:'cart/new'%></header>
+<% end %>
+
+<% if option == 'cart_created' %>
+    <header><%=button_tag "Create Cart",action:'cart/new'%></header>
+<% end %>
+
+</body>
+
+
+

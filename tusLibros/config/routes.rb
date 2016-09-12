@@ -1,11 +1,15 @@
 Rails.application.routes.draw do
 
 
-  get '/' => 'home#index'
+  get '/' => 'user#index'
 
-  get 'carts/:id/list' => 'cart#list_cart'
+  post '/login' => 'user#login'
 
+  get '/home' => 'home#home'
 
+  get 'cart/new' => 'cart#new'
+
+  get '/new' =>'home#new'
 
 
 
