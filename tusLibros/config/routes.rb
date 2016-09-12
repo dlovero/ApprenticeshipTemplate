@@ -1,16 +1,29 @@
 Rails.application.routes.draw do
 
 
+  post '/createCart' => 'cart#new'
+
+  post '/addToCart' => 'cart#add'
+
+  get '/listCart' => 'cart#list'
+
+  get 'checkOutCart' => 'cashier#checkout'
+
+  get 'listPurchases' => 'user#list'
+
+
+  #ESTO DE ABAJO ES DE LA VERSION VIEJA TODO BORRAR
+
+=begin
   get '/' => 'user#index'
 
   post '/login' => 'user#login'
 
   get '/home' => 'home#home'
 
-  get 'cart/new' => 'cart#new'
-
   get '/new' =>'home#new'
 
+=end
 
 
   # The priority is based upon order of creation: first created -> highest priority.

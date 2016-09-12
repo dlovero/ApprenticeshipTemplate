@@ -19,6 +19,7 @@ class Cart < ActiveRecord::Base
     end
     item.amount_of_books += an_amount
     item.save!
+    true
   end
 
   def occurrences_of(a_book_id)

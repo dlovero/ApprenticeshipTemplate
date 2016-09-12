@@ -1,3 +1,5 @@
+#TODO ELIMINAR
+=begin
 class HomeController < ApplicationController
 
   def home
@@ -10,3 +12,4 @@ class HomeController < ApplicationController
 
 
 end
+=end
