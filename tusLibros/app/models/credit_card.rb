@@ -24,7 +24,7 @@ class CreditCard < ActiveRecord::Base
 
 
   def expiration_of_credit_card
-    errors.add(:expiration_date, CreditCard.error_message_for_expired_credit_card) if self.expiration_date < Date.today
+    errors.add(:expiration_date, CreditCard.error_message_for_expired_credit_card) if expiration_date < Date.today
   end
 
 end

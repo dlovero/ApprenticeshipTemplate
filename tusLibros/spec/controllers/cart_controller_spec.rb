@@ -21,8 +21,8 @@ RSpec.describe CartController, type: :controller do
     context 'and you cannot create it' do
       it 'should respond with error' do
         post :new, userId: 2, password: '1234567'
-        expect(response).to have_http_status(:bad_request)
-        expect(JSON.parse(response.body)).to eq({"error" => "Could not create"})
+        expect(response).to have_http_status(:unauthorized)
+        expect(JSON.parse(response.body)).to eq({"error" => "Failed to authenticate"})
       end
     end
   end
@@ -41,9 +41,12 @@ RSpec.describe CartController, type: :controller do
 
     context 'and you cannot add it' do
       it 'should respond a header with failure, and a body with the error' do
-        post :add, cartId: '2', bookIsbn: '123455666', bookQuantity: 10
-        expect(response).to have_http_status(:bad_request)
-        expect(JSON.parse(response.body)).to eq({"error" => "Could not add"})
+        post :add, cartId: '2', bookIsbn: '1234567890', bookQuantity: 10
+        expect(response).to have_http_status(:not_found)
+        expect(JSON.parse(response.body)).to eq({"error" => "Cart not found"})
+        post :add, cartId: '1', bookIsbn: '123456777', bookQuantity: 10
+        expect(response).to have_http_status(:not_found)
+        expect(JSON.parse(response.body)).to eq({"error" => "Book not found"})
       end
     end
   end
@@ -65,8 +68,8 @@ RSpec.describe CartController, type: :controller do
     context 'and you cannot list it' do
       it 'should respond a json with error and bad request' do
         post :list, cartId: '2'
-        expect(response).to have_http_status(:bad_request)
-        expect(JSON.parse(response.body)).to eq({"error" => 'Could not list'})
+        expect(response).to have_http_status(:not_found)
+        expect(JSON.parse(response.body)).to eq({"error" => 'Cart not found'})
       end
     end
   end
@@ -86,9 +89,15 @@ RSpec.describe CartController, type: :controller do
     context 'and you cannot check it out' do
       it 'should return an error' do
         post :checkout, cartId: '2', ccn: '1234567890123456', cced: Date.new(3030, 12, 1), cco: 'Pepe Grillo'
+        expect(response).to have_http_status(:not_found)
+        expect(JSON.parse(response.body)).to eq({"error" => "Cart not found"})
+
+        post :checkout, cartId:'1', ccn: '123', cced: Date.new(3030, 12, 1), cco: 'Pepe Grillo'
         expect(response).to have_http_status(:bad_request)
-        expect(JSON.parse(response.body)).to eq({"error" => "Could not checkout"})
+        expect(JSON.parse(response.body)).to eq({"error" => "Bad credit card"})
+
       end
     end
   end
+
 end
