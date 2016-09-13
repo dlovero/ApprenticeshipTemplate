@@ -16,7 +16,8 @@ class Cashier
     assert_not_an_empty_cart(a_cart)
     total_price = a_cart.total_price
     @merchant_processor.charge(a_credit_card, total_price)
-    a_sale=Sale.create(credit_card_id: a_credit_card.id, total_price: total_price, cart: a_cart, user_id: a_cart.user_id)
+    a_sale=Sale.create!(credit_card_id: a_credit_card.id, total_price: total_price, cart_id: a_cart.id, user_id: a_cart.user_id)
     a_cart.sale_id=a_sale.id
+    a_sale.valid?
   end
 end

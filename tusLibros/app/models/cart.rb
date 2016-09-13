@@ -22,6 +22,14 @@ class Cart < ActiveRecord::Base
     true
   end
 
+  def list
+    items.collect do |item|
+      cache=Book.find_by(item.book_id)
+      {cache.isbn => item.amount_of_books}
+    end
+
+  end
+
   def occurrences_of(a_book_id)
     item = items.find_by(book_id: a_book_id)
     item ? item.amount_of_books : 0

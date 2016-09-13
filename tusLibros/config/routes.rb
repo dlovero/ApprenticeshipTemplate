@@ -7,9 +7,9 @@ Rails.application.routes.draw do
 
   get '/listCart' => 'cart#list'
 
-  get 'checkOutCart' => 'cashier#checkout'
+  get '/checkOutCart' => 'cart#checkout'
 
-  get 'listPurchases' => 'user#list'
+  get '/listPurchases' => 'sale#list'
 
 
   #ESTO DE ABAJO ES DE LA VERSION VIEJA TODO BORRAR

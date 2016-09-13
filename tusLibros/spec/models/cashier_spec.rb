@@ -10,7 +10,7 @@ describe Cashier do
     let(:a_client) { User.create(user_name: 'Chichi Peralta', password: '1234567') }
     let(:merchant_processor) { instance_spy(MerchantProcessor) }
     let(:cashier) { Cashier.new(merchant_processor) }
-    let(:a_credit_card) { CreditCard.create!(credit_card_owner: a_valid_credit_card_owner,credit_card_number: a_valid_credit_card_number,expiration_date: a_valid_expiration_date, user_id:a_client.id)}
+    let(:a_credit_card) { CreditCard.create!(credit_card_owner: a_valid_credit_card_owner, credit_card_number: a_valid_credit_card_number, expiration_date: a_valid_expiration_date, user_id: a_client.id) }
     let(:cart) { Cart.create(user_id: a_client.id) }
     let(:a_book) { Book.create(isbn: '1234227323', price: 14) }
     let(:another_book) { Book.create(isbn: '1231231231', price: 15) }
@@ -51,19 +51,17 @@ describe Cashier do
       end
 
       it 'the client should have one sale registered' do
-        sales = Sale.select{|a_sale| a_sale.user_id == a_client.id}
+        sales = Sale.select { |a_sale| a_sale.user_id == a_client.id }
         expect(sales.size).to eq 1
       end
 
-
       it 'the sale should be the last of this client' do
-        sale = Sale.find_by(user_id:a_client.id)
+        sale = Sale.find_by(user_id: a_client.id)
         expect(sale.items.first.book_id).to eq(a_book.id)
         expect(sale.items.second.book_id).to eq(another_book.id)
         expect(sale.user_id).to eq(a_client.id)
         expect(sale.total_price).to eq total_price_of_books
       end
-
     end
   end
 end
