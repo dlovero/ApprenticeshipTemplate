@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe CartController, type: :controller do
+  let(:a_user) { User.create!(user_name: 'tester', password: '1234567') }
   before do
-    a_user=User.create!(user_name: 'tester', password: '1234567')
-    a_book=Book.create!(title: 'El hombre de la mascara de hierro', isbn: '1234567890', price: 20)
+    Book.create!(title: 'El hombre de la mascara de hierro', isbn: '1234567890', price: 20)
     CreditCard.create!(credit_card_owner: 'Pepe Grillo', credit_card_number: '1234567890123456', expiration_date: Date.new(3030, 12, 1), user: a_user)
   end
 
@@ -69,7 +69,7 @@ RSpec.describe CartController, type: :controller do
       it 'should respond a JSON with the list of books on that cart' do
         post :show, cartId: '1'
         expect(response).to have_http_status(:ok)
-        expect(JSON.parse(response.body)).to eq([{"ISBN"=>"1234567890","AMOUNT" => 10}])
+        expect(JSON.parse(response.body)).to eq([{"ISBN" => "1234567890", "AMOUNT" => 10}])
       end
     end
 
@@ -92,6 +92,7 @@ RSpec.describe CartController, type: :controller do
         post :checkout, cartId: '1', ccn: '1234567890123456', cced: Date.new(3030, 12, 1), cco: 'Pepe Grillo'
         expect(response).to have_http_status(:ok)
         expect(JSON.parse(response.body)).to eq({"TRANSACTION_ID" => 1})
+        expect(CartSession.find_by(user: a_user)).to be_nil #NO MORE SESSION
       end
     end
     context 'and you cannot check it out' do
@@ -100,7 +101,7 @@ RSpec.describe CartController, type: :controller do
         expect(response).to have_http_status(:not_found)
         expect(JSON.parse(response.body)).to eq({"error" => "Couldn't find CartSession"})
 
-        post :checkout, cartId:'1', ccn: '123', cced: Date.new(3030, 12, 1), cco: 'Pepe Grillo'
+        post :checkout, cartId: '1', ccn: '123', cced: Date.new(3030, 12, 1), cco: 'Pepe Grillo'
         expect(response).to have_http_status(:bad_request)
         expect(JSON.parse(response.body)).to eq({"error" => "Validation failed: Credit card number Invalid credit card number"})
       end
