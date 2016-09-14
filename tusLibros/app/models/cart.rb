@@ -2,12 +2,11 @@ class Cart < ActiveRecord::Base
   has_many :items
   has_many :books, through: :items
   belongs_to :sale
-  belongs_to :cart
+  belongs_to :user
 
   def empty?
     books.empty?
   end
-
 
   def total_amount_of_books
     items.map { |item| item.amount_of_books }.reduce(0, :+)
@@ -38,6 +37,5 @@ class Cart < ActiveRecord::Base
   def total_price
     items.map { |an_item| self.occurrences_of(an_item.book_id) * Book.find_by(id:an_item.book_id).price }.inject(0,:+)
   end
-
 
 end

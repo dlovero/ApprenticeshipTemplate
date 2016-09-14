@@ -10,7 +10,6 @@ RSpec.describe Cart do
       expect(a_cart).to be_empty
     end
 
-
     it 'should have a zero amount of books' do
       expect(a_cart.total_amount_of_books).to be 0
     end
@@ -19,7 +18,6 @@ RSpec.describe Cart do
       before do
         a_cart.add(a_book, 1)
       end
-
 
       it 'should not be empty' do
         expect(a_cart).not_to be_empty
@@ -38,14 +36,10 @@ RSpec.describe Cart do
           expect(a_cart.total_amount_of_books).to eq 2
         end
 
-
         it 'should have the same book twice' do
           expect(a_cart.occurrences_of(a_book)).to eq 2
         end
-
       end
-
     end
-
   end
 end

@@ -24,7 +24,7 @@ RSpec.describe SaleController, type: :controller do
     context 'and you cant' do
       it 'should return an error' do
         post :list, userId:2, password:'1234567'
-        expect(response).to have_http_status :not_found
+        expect(response).to have_http_status :bad_request
         expect(JSON.parse(response.body)).to eq({"error"=>"Could not list"})
       end
     end
