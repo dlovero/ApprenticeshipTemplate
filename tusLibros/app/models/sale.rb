@@ -3,10 +3,10 @@ class Sale < ActiveRecord::Base
   belongs_to :credit_card
   belongs_to :user
 
-  def find_all_sales_formated
-   items.collect do |item|
-      {item.book.isbn => item.amount_of_books}
-    end
+  def find_all_sales_formated(hash)
+    items.each do |item|
+      hash[item.book.isbn] = item.amount_of_books
+     end
   end
 end
 

@@ -2,8 +2,8 @@ require_relative 'application_controller'
 
 class CartController < ApplicationController
 
+  #around_action :assert_active_cart, only: [:add, :list, :checkout]
 
-#  before_action :assert_active_cart, only: [:add, :list, :checkout]
   def create
     user = User.find_by(id: params[:userId].to_i, password: params[:password])
     return render json: {error: "Failed to authenticate"}, status: :unauthorized if user.nil?
