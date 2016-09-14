@@ -2,7 +2,7 @@ require_relative 'application_controller'
 
 class CartController < ApplicationController
 
-  #around_action :assert_active_cart, only: [:add, :list, :checkout]
+  #around_action :exception_handling
 
   def create
     user = User.find_by(id: params[:userId].to_i, password: params[:password])
@@ -26,7 +26,7 @@ class CartController < ApplicationController
     cart_session = CartSession.find_by(id: params[:cartId].to_i)
     return render json: {error: "Cart not found"}, status: :not_found if cart_session.nil?
     list_of_items=cart_session.list
-    return render json: {cart_session.cart_id => list_of_items}, status: :ok if !list_of_items.nil?
+    return render json: list_of_items, status: :ok if !list_of_items.nil?
     return render json: {error: "Could not list"}, status: :bad_request #unlikely
   end
 

@@ -21,7 +21,7 @@ class Cart < ActiveRecord::Base
 
   def list
     items.collect do |item|
-      {item.book.isbn => item.amount_of_books}
+      {"ISBN"=>item.book.isbn,"AMOUNT" => item.amount_of_books}
     end
   end
 
