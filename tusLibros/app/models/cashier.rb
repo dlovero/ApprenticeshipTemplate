@@ -12,12 +12,14 @@ class Cashier
     'Cannot checkout an empty cart'
   end
 
-  def checkout(a_cart, a_credit_card)
-    assert_not_an_empty_cart(a_cart)
-    total_price = a_cart.total_price
+  def checkout(a_cart_session, a_credit_card)
+    assert_not_an_empty_cart(a_cart_session)
+    total_price = a_cart_session.total_price
     @merchant_processor.charge(a_credit_card, total_price)
-    a_sale=Sale.create!(credit_card_id: a_credit_card.id, total_price: total_price, cart_id: a_cart.id, user_id: a_cart.user_id)
-    a_cart.sale_id=a_sale.id
-    a_sale.valid?
+    a_sale = Sale.create!(credit_card: a_credit_card, total_price: total_price, user: a_cart_session.user)
+    a_sale.items+=a_cart_session.cart.items
+    a_sale.save!
+    a_cart_session.cart.destroy
+    a_cart_session.destroy
   end
 end

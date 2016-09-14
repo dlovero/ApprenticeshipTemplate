@@ -1,15 +1,15 @@
 Rails.application.routes.draw do
 
 
-  post '/createCart' => 'cart#new'
+  post '/createCart' => 'cart#create'
 
   post '/addToCart' => 'cart#add'
 
-  get '/listCart' => 'cart#list'
+  get '/listCart' => 'cart#show'
 
   get '/checkOutCart' => 'cart#checkout'
 
-  get '/listPurchases' => 'sale#list'
+  get '/listPurchases' => 'sale#show'
 
 
   #ESTO DE ABAJO ES DE LA VERSION VIEJA TODO BORRAR

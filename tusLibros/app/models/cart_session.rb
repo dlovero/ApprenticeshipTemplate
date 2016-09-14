@@ -1,14 +1,16 @@
-class Session < ActiveRecord::Base
+class CartSession < ActiveRecord::Base
   belongs_to :cart
+  belongs_to :user
 
   after_create :update_last_time_used
 
-  def self.for(a_user)
-    self.create(cart: Cart.create(user: a_user))
+  def self.for!(a_user)
+    self.create!(cart: Cart.create(),user:a_user)
   end
 
   def update_last_time_used
     self.last_time_used= Time.now
+    save!
   end
 
   def expired?
@@ -42,8 +44,8 @@ class Session < ActiveRecord::Base
     cart.total_amount_of_books
   end
 
-  def occurrences_of(a_book_id)
-    cart.occurrences_of(a_book_id)
+  def occurrences_of(a_book)
+    cart.occurrences_of(a_book)
   end
 
   def total_price

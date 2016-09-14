@@ -1,9 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe Session, type: :model do
-  let(:a_cart) { Cart.create }
-  let!(:session) { Session.create(cart: a_cart) }
-  let(:a_book) { Book.create(isbn: '13513138568', price: 10) }
+RSpec.describe CartSession, type: :model do
+  let!(:session) { CartSession.for!(User.create!(user_name:'PEPEPE', password:'12345678')) }
+  let(:a_book) { Book.create!(isbn: '13513138568', price: 10) }
 
   context 'With a new session' do
     context 'and its been 29 minutes since its creation' do
@@ -20,11 +19,11 @@ RSpec.describe Session, type: :model do
         end
 
         it 'the cart should have the book' do
-          expect(a_cart.occurrences_of(a_book.id)).to eq 1
+          expect(session.cart.occurrences_of(a_book)).to eq 1
         end
 
         it 'the cart can be listed' do
-          expect(a_cart.list).to eq([{a_book.isbn => 1}])
+          expect(session.cart.list).to eq([{a_book.isbn => 1}])
         end
 
         context 'and 10 minutes more has passed' do
@@ -78,11 +77,11 @@ RSpec.describe Session, type: :model do
       end
 
       it 'should raise an error when adding a new book' do
-        expect { session.add(a_book, 1) }.to raise_error Session.expired_session_error_message
+        expect { session.add(a_book, 1) }.to raise_error CartSession.expired_session_error_message
       end
 
       it 'should raise an error when listing a cart' do
-        expect { session.list }.to raise_error Session.expired_session_error_message
+        expect { session.list }.to raise_error CartSession.expired_session_error_message
       end
     end
   end

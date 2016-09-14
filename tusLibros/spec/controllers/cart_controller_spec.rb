@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe CartController, type: :controller do
   before do
-    User.create!(user_name: 'tester', password: '1234567')
-    Book.create!(title: 'El hombre de la mascara de hierro', isbn: '1234567890', price: 20)
-    CreditCard.create!(credit_card_owner: 'Pepe Grillo', credit_card_number: '1234567890123456', expiration_date: Date.new(3030, 12, 1), user_id: 1)
+    a_user=User.create!(user_name: 'tester', password: '1234567')
+    a_book=Book.create!(title: 'El hombre de la mascara de hierro', isbn: '1234567890', price: 20)
+    CreditCard.create!(credit_card_owner: 'Pepe Grillo', credit_card_number: '1234567890123456', expiration_date: Date.new(3030, 12, 1), user: a_user)
   end
 
   context 'When receiving a request to create a new cart' do
@@ -12,7 +12,7 @@ RSpec.describe CartController, type: :controller do
 
     context 'and you can create it' do
       it 'should respond with the cart id' do
-        post :new, userId: 1, password: '1234567'
+        post :create, userId: 1, password: '1234567'
         expect(response).to have_http_status(:created)
         expect(JSON.parse(response.body)).to eq({"id" => 1})
       end
@@ -20,7 +20,7 @@ RSpec.describe CartController, type: :controller do
 
     context 'and you cannot create it' do
       it 'should respond with error' do
-        post :new, userId: 2, password: '1234567'
+        post :create, userId: 2, password: '1234567'
         expect(response).to have_http_status(:unauthorized)
         expect(JSON.parse(response.body)).to eq({"error" => "Failed to authenticate"})
       end
@@ -29,7 +29,7 @@ RSpec.describe CartController, type: :controller do
 
   context 'When adding a book to a cart' do
     before do
-      post :new, userId: 1, password: '1234567'
+      post :create, userId: 1, password: '1234567'
     end
 
     context 'and you can add it' do
@@ -53,13 +53,13 @@ RSpec.describe CartController, type: :controller do
 
   context 'When listing a cart' do
     before do
-      post :new, userId: 1, password: '1234567'
+      post :create, userId: 1, password: '1234567'
       post :add, cartId: 1, bookIsbn: '1234567890', bookQuantity: 10
     end
 
     context 'and you can list it' do
       it 'should respond a JSON with the list of books on that cart' do
-        post :list, cartId: '1'
+        post :show, cartId: '1'
         expect(response).to have_http_status(:ok)
         expect(JSON.parse(response.body)).to eq({"1" => ["1234567890" => 10]})
       end
@@ -67,7 +67,7 @@ RSpec.describe CartController, type: :controller do
 
     context 'and you cannot list it' do
       it 'should respond a json with error and bad request' do
-        post :list, cartId: '2'
+        post :show, cartId: '2'
         expect(response).to have_http_status(:not_found)
         expect(JSON.parse(response.body)).to eq({"error" => 'Cart not found'})
       end
@@ -76,7 +76,7 @@ RSpec.describe CartController, type: :controller do
 
   context 'When checking out a cart' do
     before do
-      post :new, userId: 1, password: '1234567'
+      post :create, userId: 1, password: '1234567'
       post :add, cartId: 1, bookIsbn: '1234567890', bookQuantity: 10
     end
     context 'and you can check it out' do
