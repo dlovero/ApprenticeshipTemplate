@@ -17,15 +17,15 @@ RSpec.describe SaleController, type: :controller do
       it 'should return a json with a list of all the purchases' do
         post :show, userId: 1, password: '1234567'
         expect(response).to have_http_status :ok
-        expect(JSON.parse(response.body)).to eq([{"ISBN"=>"1234567890","AMOUNT" => 10},{"ISBN"=>"1231231231","AMOUNT" => 11}])
+        expect(JSON.parse(response.body)).to eq([{"ISBN" => "1234567890", "AMOUNT" => 10}, {"ISBN" => "1231231231", "AMOUNT" => 11}])
       end
     end
 
     context 'and you cant' do
       it 'should return an error' do
-        post :show, userId:2, password:'1234567'
-        expect(response).to have_http_status :bad_request
-        expect(JSON.parse(response.body)).to eq({"error"=>"Could not list"})
+        post :show, userId: 2, password: '1234567'
+        expect(response).to have_http_status :not_found
+        expect(JSON.parse(response.body)).to eq({"error" => "Couldn't find User"})
       end
     end
   end

@@ -5,7 +5,7 @@ class CartSession < ActiveRecord::Base
   after_create :update_last_time_used
 
   def self.for!(a_user)
-    self.create!(cart: Cart.create(),user:a_user)
+    self.create!(cart: Cart.create(), user: a_user)
   end
 
   def update_last_time_used
@@ -33,7 +33,7 @@ class CartSession < ActiveRecord::Base
   end
 
   def assert_active_session
-    raise self.class.expired_session_error_message if expired?
+    raise ExpiredCartException, self.class.expired_session_error_message if expired?
   end
 
   def empty?

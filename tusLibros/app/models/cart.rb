@@ -12,7 +12,7 @@ class Cart < ActiveRecord::Base
   end
 
   def add(a_book, an_amount)
-    item = items.find_or_create_by(book: a_book) do |item|
+    item = items.find_or_create_by!(book: a_book) do |item|
       item.amount_of_books = 0
     end
     item.amount_of_books += an_amount
@@ -21,7 +21,7 @@ class Cart < ActiveRecord::Base
 
   def list
     items.collect do |item|
-      {"ISBN"=>item.book.isbn,"AMOUNT" => item.amount_of_books}
+      {"ISBN" => item.book.isbn, "AMOUNT" => item.amount_of_books}
     end
   end
 

@@ -21,8 +21,8 @@ RSpec.describe CartController, type: :controller do
     context 'and you cannot create it' do
       it 'should respond with error' do
         post :create, userId: 2, password: '1234567'
-        expect(response).to have_http_status(:unauthorized)
-        expect(JSON.parse(response.body)).to eq({"error" => "Failed to authenticate"})
+        expect(response).to have_http_status(:not_found)
+        expect(JSON.parse(response.body)).to eq({"error" => "Couldn't find User"})
       end
     end
   end
@@ -43,12 +43,20 @@ RSpec.describe CartController, type: :controller do
       it 'should respond a header with failure, and a body with the error' do
         post :add, cartId: '2', bookIsbn: '1234567890', bookQuantity: 10
         expect(response).to have_http_status(:not_found)
-        expect(JSON.parse(response.body)).to eq({"error" => "Cart not found"})
+        expect(JSON.parse(response.body)).to eq({"error" => "Couldn't find CartSession"})
         post :add, cartId: '1', bookIsbn: '123456777', bookQuantity: 10
         expect(response).to have_http_status(:not_found)
-        expect(JSON.parse(response.body)).to eq({"error" => "Book not found"})
+        expect(JSON.parse(response.body)).to eq({"error" => "Couldn't find Book"})
       end
     end
+
+    context 'and the cart is expired' do
+      it 'should respond a header with error' do
+        Timecop.travel 30.minutes.from_now
+        post :add, cartId: '1', bookIsbn: '1234567890', bookQuantity: 10
+      end
+    end
+
   end
 
   context 'When listing a cart' do
@@ -69,7 +77,7 @@ RSpec.describe CartController, type: :controller do
       it 'should respond a json with error and bad request' do
         post :show, cartId: '2'
         expect(response).to have_http_status(:not_found)
-        expect(JSON.parse(response.body)).to eq({"error" => 'Cart not found'})
+        expect(JSON.parse(response.body)).to eq({"error" => "Couldn't find CartSession"})
       end
     end
   end
@@ -90,12 +98,11 @@ RSpec.describe CartController, type: :controller do
       it 'should return an error' do
         post :checkout, cartId: '2', ccn: '1234567890123456', cced: Date.new(3030, 12, 1), cco: 'Pepe Grillo'
         expect(response).to have_http_status(:not_found)
-        expect(JSON.parse(response.body)).to eq({"error" => "Cart not found"})
+        expect(JSON.parse(response.body)).to eq({"error" => "Couldn't find CartSession"})
 
         post :checkout, cartId:'1', ccn: '123', cced: Date.new(3030, 12, 1), cco: 'Pepe Grillo'
         expect(response).to have_http_status(:bad_request)
-        expect(JSON.parse(response.body)).to eq({"error" => "Bad credit card"})
-
+        expect(JSON.parse(response.body)).to eq({"error" => "Validation failed: Credit card number Invalid credit card number"})
       end
     end
   end
