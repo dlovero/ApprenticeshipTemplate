@@ -1,0 +1,2 @@
+class WrongAmountOfBooksException < Exception
+end

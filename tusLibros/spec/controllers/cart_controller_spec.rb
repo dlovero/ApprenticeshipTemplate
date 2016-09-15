@@ -12,7 +12,7 @@ RSpec.describe CartController, type: :controller do
 
     context 'and you can create it' do
       it 'should respond with the cart id' do
-        post :create, userId: 1, password: '1234567'
+        post :create, {login: {id: 1, password: '1234567'}}
         expect(response).to have_http_status(:created)
         expect(JSON.parse(response.body)).to eq({"id" => 1})
       end
@@ -20,8 +20,8 @@ RSpec.describe CartController, type: :controller do
 
     context 'and you cannot create it' do
       it 'should respond with error' do
-        post :create, userId: 2, password: '1234567'
-        expect(response).to have_http_status(:not_found)
+        post :create, {login: {id: 2, password: '1234567'}}
+        expect(response).to have_http_status(:unauthorized)
         expect(JSON.parse(response.body)).to eq({"error" => "Couldn't find User"})
       end
     end
@@ -29,12 +29,12 @@ RSpec.describe CartController, type: :controller do
 
   context 'When adding a book to a cart' do
     before do
-      post :create, userId: 1, password: '1234567'
+      post :create, {login: {id: 1, password: '1234567'}}
     end
 
     context 'and you can add it' do
       it 'should respond a header with success' do
-        post :add, cartId: '1', bookIsbn: '1234567890', bookQuantity: 10
+        post :add, cartId: 1, bookIsbn: '1234567890', bookQuantity: 10
         expect(response).to have_http_status(:ok)
       end
     end
@@ -61,7 +61,7 @@ RSpec.describe CartController, type: :controller do
 
   context 'When listing a cart' do
     before do
-      post :create, userId: 1, password: '1234567'
+      post :create, {login: {id: 1, password: '1234567'}}
       post :add, cartId: 1, bookIsbn: '1234567890', bookQuantity: 10
     end
 
@@ -75,7 +75,7 @@ RSpec.describe CartController, type: :controller do
 
     context 'and you cannot list it' do
       it 'should respond a json with error and bad request' do
-        post :show, cartId: '2'
+        post :show, cartId: 2
         expect(response).to have_http_status(:not_found)
         expect(JSON.parse(response.body)).to eq({"error" => "Couldn't find CartSession"})
       end
@@ -84,24 +84,26 @@ RSpec.describe CartController, type: :controller do
 
   context 'When checking out a cart' do
     before do
-      post :create, userId: 1, password: '1234567'
+      post :create, {login: {id: 1, password: '1234567'}}
       post :add, cartId: 1, bookIsbn: '1234567890', bookQuantity: 10
     end
     context 'and you can check it out' do
       it 'should return a json with the check out data' do
-        post :checkout, cartId: '1', ccn: '1234567890123456', cced: Date.new(3030, 12, 1), cco: 'Pepe Grillo'
+        post :checkout, {cartId: '1', credit_card: {credit_card_number: '1234567890123456', expiration_date: Date.new(3030, 12, 1), credit_card_owner: 'Pepe Grillo'}}
         expect(response).to have_http_status(:ok)
         expect(JSON.parse(response.body)).to eq({"TRANSACTION_ID" => 1})
         expect(CartSession.find_by(user: a_user)).to be_nil #NO MORE SESSION
       end
     end
-    context 'and you cannot check it out' do
+    context 'and you cannot check it out because the cart is invalid' do
       it 'should return an error' do
-        post :checkout, cartId: '2', ccn: '1234567890123456', cced: Date.new(3030, 12, 1), cco: 'Pepe Grillo'
+        post :checkout, {cartId: 2, credit_card: {credit_card_number: '1234567890123456', expiration_date: Date.new(3030, 12, 1), credit_card_owner: 'Pepe Grillo'}}
         expect(response).to have_http_status(:not_found)
         expect(JSON.parse(response.body)).to eq({"error" => "Couldn't find CartSession"})
+      end
 
-        post :checkout, cartId: '1', ccn: '123', cced: Date.new(3030, 12, 1), cco: 'Pepe Grillo'
+      it 'should return an error because the credit card is invalid' do
+        post :checkout, {cartId: '1', credit_card: {credit_card_number: '123', expiration_date: Date.new(3030, 12, 1), credit_card_owner: 'Pepe Grillo'}}
         expect(response).to have_http_status(:bad_request)
         expect(JSON.parse(response.body)).to eq({"error" => "Validation failed: Credit card number Invalid credit card number"})
       end

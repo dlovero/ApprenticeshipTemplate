@@ -12,7 +12,7 @@ class Cart < ActiveRecord::Base
   end
 
   def add(a_book, an_amount)
-    item = items.find_or_create_by!(book: a_book) do |item|
+    item = items.find_or_initialize_by(book: a_book) do |item|
       item.amount_of_books = 0
     end
     item.amount_of_books += an_amount
@@ -33,5 +33,6 @@ class Cart < ActiveRecord::Base
   def total_price
     items.map { |an_item| self.occurrences_of(an_item.book) * an_item.book.price }.inject(0, :+)
   end
+
 
 end

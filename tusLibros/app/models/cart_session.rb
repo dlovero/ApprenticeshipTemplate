@@ -25,7 +25,7 @@ class CartSession < ActiveRecord::Base
   def add(a_book, quantity)
     self.assert_active_session
     self.update_last_time_used
-    cart.add(a_book, quantity)
+    cart.add(a_book, quantity.to_i)
   end
 
   def self.expired_session_error_message
@@ -50,6 +50,11 @@ class CartSession < ActiveRecord::Base
 
   def total_price
     cart.total_price
+  end
+
+  def end
+    cart.destroy!
+    self.destroy!
   end
 
 end

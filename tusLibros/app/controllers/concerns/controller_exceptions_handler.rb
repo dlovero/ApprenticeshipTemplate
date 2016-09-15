@@ -9,6 +9,10 @@ module ControllerExceptionsHandler
       render json: {"error" => error.message}, status: :bad_request
     rescue ExpiredCartException => error
       render json: {"error" => error.message}, status: :unprocessable_entity
+    rescue UnauthorizedException => error
+      render json: {"error" => error.message}, status: :unauthorized
+    rescue WrongAmountOfBooksException => error
+      render json: {"error" => error.message}, status: :bad_request
     rescue Exception => error
       render json: {"error" => error.message}, status: :internal_server_error
     end
