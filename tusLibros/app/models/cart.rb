@@ -19,12 +19,6 @@ class Cart < ActiveRecord::Base
     item.save!
   end
 
-  def list
-    items.collect do |item|
-      {"ISBN" => item.book.isbn, "AMOUNT" => item.amount_of_books}
-    end
-  end
-
   def occurrences_of(a_book)
     item = items.find_by(book: a_book)
     item ? item.amount_of_books : 0

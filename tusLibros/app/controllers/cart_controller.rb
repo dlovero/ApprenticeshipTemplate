@@ -19,14 +19,14 @@ class CartController < ApplicationController
 
   def show
     cart_session = CartSession.find_by_cart_id!(cart_id)
-    render json: cart_session.list, status: :ok
+    render json: cart_session.items, status: :ok
   end
 
   def checkout
     cart_session = CartSession.find_by_cart_id!(cart_id)
     credit_card = CreditCard.find_or_create_by!(credit_card_params)
-    Cashier.new(MerchantProcessor.new).checkout(cart_session, credit_card)
-    render json: {"TRANSACTION_ID" => Sale.find_by!(user: cart_session.user).id}, status: :ok
+    id_sale=Cashier.new(MerchantProcessor.new).checkout(cart_session, credit_card)
+    render json: {"transaction_id" => id_sale}, status: :ok
   end
 
   private

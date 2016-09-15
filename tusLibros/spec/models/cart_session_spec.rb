@@ -22,9 +22,6 @@ RSpec.describe CartSession, type: :model do
           expect(session.cart.occurrences_of(a_book)).to eq 1
         end
 
-        it 'the cart can be listed' do
-          expect(session.cart.list).to eq([{"ISBN"=>a_book.isbn,"AMOUNT" => 1}])
-        end
 
         context 'and 10 minutes more has passed' do
           before do
@@ -36,20 +33,11 @@ RSpec.describe CartSession, type: :model do
           end
         end
 
-        context 'and the session list its cart content' do
-          it 'should return a hash with the isbn and the number' do
-            expect(session.list).to eq([{"ISBN"=>a_book.isbn,"AMOUNT" => 1}])
-          end
-        end
 
         context 'you can' do
 
           it 'check the ocurrences of a book through session' do
             expect(session.occurrences_of(a_book.id)).to eq 1
-          end
-
-          it 'list the cart through session' do
-            expect(session.list).to eq([{"ISBN"=>a_book.isbn,"AMOUNT" => 1}])
           end
 
           it 'check the total price through session' do
@@ -80,9 +68,6 @@ RSpec.describe CartSession, type: :model do
         expect { session.add(a_book, 1) }.to raise_error CartSession.expired_session_error_message
       end
 
-      it 'should raise an error when listing a cart' do
-        expect { session.list }.to raise_error CartSession.expired_session_error_message
-      end
     end
   end
 end

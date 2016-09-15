@@ -69,7 +69,7 @@ RSpec.describe CartController, type: :controller do
       it 'should respond a JSON with the list of books on that cart' do
         post :show, cartId: '1'
         expect(response).to have_http_status(:ok)
-        expect(JSON.parse(response.body)).to eq([{"ISBN" => "1234567890", "AMOUNT" => 10}])
+        expect(JSON.parse(response.body)).to eq([{"isbn" => "1234567890", "amount_of_books" => 10}])
       end
     end
 
@@ -91,7 +91,7 @@ RSpec.describe CartController, type: :controller do
       it 'should return a json with the check out data' do
         post :checkout, {cartId: '1', credit_card: {credit_card_number: '1234567890123456', expiration_date: Date.new(3030, 12, 1), credit_card_owner: 'Pepe Grillo'}}
         expect(response).to have_http_status(:ok)
-        expect(JSON.parse(response.body)).to eq({"TRANSACTION_ID" => 1})
+        expect(JSON.parse(response.body)).to eq({"transaction_id" => 1})
         expect(CartSession.find_by(user: a_user)).to be_nil #NO MORE SESSION
       end
     end

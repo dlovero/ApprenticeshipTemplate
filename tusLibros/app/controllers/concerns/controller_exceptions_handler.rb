@@ -13,8 +13,8 @@ module ControllerExceptionsHandler
       render json: {"error" => error.message}, status: :unauthorized
     rescue WrongAmountOfBooksException => error
       render json: {"error" => error.message}, status: :bad_request
-    rescue Exception => error
-      render json: {"error" => error.message}, status: :internal_server_error
+ #   rescue Exception => error
+   #   render json: {"error" => error.message}, status: :internal_server_error
     end
   end
 end

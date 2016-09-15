@@ -15,7 +15,8 @@ class Cashier
   def checkout(a_cart_session, a_credit_card)
     assert_not_an_empty_cart(a_cart_session)
     @merchant_processor.charge(a_credit_card, a_cart_session.total_price)
-    Sale.register_new_sale!(a_credit_card, a_cart_session)
+    id=Sale.register_new_sale!(a_credit_card, a_cart_session)
     a_cart_session.end
+    id
   end
 end

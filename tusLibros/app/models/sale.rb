@@ -3,16 +3,18 @@ class Sale < ActiveRecord::Base
   belongs_to :credit_card
   belongs_to :user
 
-  def find_all_sales_formated(list)
-    items.each do |item|
-      list.push({"ISBN" => item.book.isbn, "AMOUNT" => item.amount_of_books})
+  def self.find_all_sales_formated(user)
+    all_sales=Sale.where(user: user)
+    all_sales.reduce([]) do |all_items, sale|
+      all_items+=sale.items
     end
   end
 
-  def self.register_new_sale!(a_credit_card,a_cart_session)
-   a_sale = Sale.create!(credit_card: a_credit_card, total_price: a_cart_session.total_price, user: a_cart_session.user)
-   a_sale.items+=a_cart_session.cart.items
-   a_sale.save!
+  def self.register_new_sale!(a_credit_card, a_cart_session)
+    a_sale = Sale.create!(credit_card: a_credit_card, total_price: a_cart_session.total_price, user: a_cart_session.user)
+    a_sale.items+=a_cart_session.cart.items
+    a_sale.save!
+    a_sale.id
   end
 end
 

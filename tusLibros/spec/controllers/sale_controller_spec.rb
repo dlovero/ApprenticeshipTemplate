@@ -17,7 +17,7 @@ RSpec.describe SaleController, type: :controller do
       it 'should return a json with a list of all the purchases' do
         post :show, userId: 1, password: '1234567'
         expect(response).to have_http_status :ok
-        expect(JSON.parse(response.body)).to eq([{"ISBN" => "1234567890", "AMOUNT" => 10}, {"ISBN" => "1231231231", "AMOUNT" => 11}])
+        expect(JSON.parse(response.body)).to eq([{"isbn" => "1234567890", "amount_of_books" => 10}, {"isbn" => "1231231231", "amount_of_books" => 11}])
       end
     end
 

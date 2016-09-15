@@ -5,13 +5,9 @@ class SaleController < ApplicationController
 
 
   def show
-    all_sales_formated = []
     user=User.find_by!(id: params[:userId].to_i)
-    all_sales=Sale.where(user: user)
-    all_sales.each do |a_sale|
-      a_sale.find_all_sales_formated(all_sales_formated)
-    end
-    render json: all_sales_formated, status: :ok
+    all_sales=Sale.find_all_sales_formated(user)
+    render json: all_sales, status: :ok
   end
 
 end

@@ -8,6 +8,10 @@ class CartSession < ActiveRecord::Base
     self.create!(cart: Cart.create(), user: a_user)
   end
 
+  def items
+    cart.items
+  end
+
   def update_last_time_used
     self.last_time_used= Time.now
     save!
@@ -17,10 +21,6 @@ class CartSession < ActiveRecord::Base
     Time.now-last_time_used >= 30.minutes
   end
 
-  def list
-    assert_active_session
-    cart.list
-  end
 
   def add(a_book, quantity)
     self.assert_active_session
