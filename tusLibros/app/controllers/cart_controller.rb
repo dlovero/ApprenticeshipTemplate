@@ -1,7 +1,6 @@
 require_relative 'application_controller'
 
 class CartController < ApplicationController
-  around_action :exception_handling
 
   def create
     user = User.log_in!(create_params)
