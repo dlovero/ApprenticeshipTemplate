@@ -16,5 +16,10 @@ class Sale < ActiveRecord::Base
     a_sale.save!
     a_sale.id
   end
+
+  def transaction_id
+    id
+  end
+
 end
 

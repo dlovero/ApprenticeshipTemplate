@@ -12,20 +12,6 @@ Rails.application.routes.draw do
   get '/listPurchases' => 'sale#show'
 
 
-  #ESTO DE ABAJO ES DE LA VERSION VIEJA TODO BORRAR
-
-=begin
-  get '/' => 'user#index'
-
-  post '/login' => 'user#login'
-
-  get '/home' => 'home#home'
-
-  get '/new' =>'home#new'
-
-=end
-
-
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

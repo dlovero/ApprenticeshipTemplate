@@ -1,13 +1,12 @@
 require_relative 'application_controller'
 
 class CartController < ApplicationController
-  include ControllerExceptionsHandler
   around_action :exception_handling
 
   def create
     user = User.log_in!(create_params)
     cart_session = CartSession.for!(user)
-    render json: {id: cart_session.cart_id}, status: :created
+    render json: cart_session, status: :created
   end
 
   def add
@@ -25,8 +24,8 @@ class CartController < ApplicationController
   def checkout
     cart_session = CartSession.find_by_cart_id!(cart_id)
     credit_card = CreditCard.find_or_create_by!(credit_card_params)
-    id_sale=Cashier.new(MerchantProcessor.new).checkout(cart_session, credit_card)
-    render json: {"transaction_id" => id_sale}, status: :ok
+    sale_id=Cashier.new(MerchantProcessor.new).checkout(cart_session, credit_card)
+    render json: Sale.find(sale_id), status: :ok
   end
 
   private

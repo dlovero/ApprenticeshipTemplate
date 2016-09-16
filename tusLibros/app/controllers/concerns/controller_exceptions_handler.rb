@@ -3,18 +3,23 @@ module ControllerExceptionsHandler
   def exception_handling
     begin
       yield
-    rescue ActiveRecord::RecordNotFound => error
-      render json: {"error" => error.message}, status: :not_found
-    rescue ActiveRecord::RecordInvalid => error
-      render json: {"error" => error.message}, status: :bad_request
-    rescue ExpiredCartException => error
-      render json: {"error" => error.message}, status: :unprocessable_entity
-    rescue UnauthorizedException => error
-      render json: {"error" => error.message}, status: :unauthorized
-    rescue WrongAmountOfBooksException => error
-      render json: {"error" => error.message}, status: :bad_request
- #   rescue Exception => error
-   #   render json: {"error" => error.message}, status: :internal_server_error
+    rescue Exception => error
+      set_exception_map
+      render json: {error: error.message}, status: @exception_status_map[error.class].to_sym
     end
+  end
+
+  private
+
+  def set_exception_map
+    @exception_status_map = {
+        ActiveRecord::RecordNotFound => "not_found",
+        ExpiredCartException =>  "bad_request",
+        ActiveRecord::RecordInvalid => "bad_request",
+        ExpiredCartException => "unprocessable_entity",
+        UnauthorizedException => "unauthorized",
+        WrongAmountOfBooksException => "bad_request",
+        Exception => "internal_server_error"
+    }
   end
 end

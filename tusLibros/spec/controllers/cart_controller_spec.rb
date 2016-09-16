@@ -17,7 +17,7 @@ RSpec.describe CartController, type: :controller do
 
       it 'should respond with the cart id' do
         expect(response).to have_http_status(:created)
-        expect(JSON.parse(response.body)).to eq({"id" => Cart.last.id})
+        expect(JSON.parse(response.body)).to eq({"cart_id" => Cart.last.id})
       end
     end
 
@@ -32,7 +32,7 @@ RSpec.describe CartController, type: :controller do
   end
 
   context 'When adding a book to a cart' do
-    let!(:cart_session) {CartSession.for!(a_user)}
+    let!(:cart_session) { CartSession.for!(a_user) }
 
     before do
       post :add, cartId: cart_id, bookIsbn: book_isbn, bookQuantity: 10
@@ -124,7 +124,7 @@ RSpec.describe CartController, type: :controller do
   end
 
   context 'When 30 or more minutes passed after the creation of the Cart Session' do
-    let!(:cart_session) {CartSession.for!(a_user)}
+    let!(:cart_session) { CartSession.for!(a_user) }
 
     before do
       Timecop.travel 30.minutes.from_now
@@ -139,4 +139,5 @@ RSpec.describe CartController, type: :controller do
       end
     end
   end
+
 end

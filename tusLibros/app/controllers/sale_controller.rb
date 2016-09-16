@@ -1,8 +1,6 @@
 class SaleController < ApplicationController
 
-  include ControllerExceptionsHandler
   around_action :exception_handling
-
 
   def show
     user=User.find_by!(show_param)
@@ -15,7 +13,5 @@ class SaleController < ApplicationController
   def show_param
     {id: params.require(:userId).to_i}
   end
-
-
 
 end
