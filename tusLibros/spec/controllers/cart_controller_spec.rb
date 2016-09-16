@@ -8,19 +8,23 @@ RSpec.describe CartController, type: :controller do
   end
 
   context 'When receiving a request to create a new cart' do
+    before do
+      post :create, {login: login_params}
+    end
 
+    context 'and you receive a valid login id and password' do
+      let(:login_params) { {id: 1, password: '1234567'} }
 
-    context 'and you can create it' do
       it 'should respond with the cart id' do
-        post :create, {login: {id: 1, password: '1234567'}}
         expect(response).to have_http_status(:created)
-        expect(JSON.parse(response.body)).to eq({"id" => 1})
+        expect(JSON.parse(response.body)).to eq({"id" => Cart.last.id})
       end
     end
 
-    context 'and you cannot create it' do
-      it 'should respond with error' do
-        post :create, {login: {id: 2, password: '1234567'}}
+    context 'and you receive wrong credentials' do
+      let(:login_params) { {id: 2, password: '1234567'} }
+
+      it 'should respond with unauthorized error' do
         expect(response).to have_http_status(:unauthorized)
         expect(JSON.parse(response.body)).to eq({"error" => "Couldn't find User"})
       end
@@ -28,35 +32,44 @@ RSpec.describe CartController, type: :controller do
   end
 
   context 'When adding a book to a cart' do
+    let!(:cart_session) {CartSession.for!(a_user)}
+
     before do
-      post :create, {login: {id: 1, password: '1234567'}}
+      post :add, cartId: cart_id, bookIsbn: book_isbn, bookQuantity: 10
     end
 
-    context 'and you can add it' do
-      it 'should respond a header with success' do
-        post :add, cartId: 1, bookIsbn: '1234567890', bookQuantity: 10
+    context 'and the book does exist in the editorial' do
+      let(:book_isbn) { '1234567890' }
+      let!(:cart_id) { cart_session.cart_id }
+
+      it 'should respond with ok' do
         expect(response).to have_http_status(:ok)
+      end
+
+      it 'the cart should have the new book' do
+        expect(cart_session).not_to be_empty
       end
     end
 
-    context 'and you cannot add it' do
-      it 'should respond a header with failure, and a body with the error' do
-        post :add, cartId: '2', bookIsbn: '1234567890', bookQuantity: 10
+    context 'and the cart does not exist' do
+      let(:book_isbn) { '1234567890' }
+      let(:cart_id) { cart_session.cart_id + 1 }
+
+      it 'should respond not error' do
         expect(response).to have_http_status(:not_found)
         expect(JSON.parse(response.body)).to eq({"error" => "Couldn't find CartSession"})
-        post :add, cartId: '1', bookIsbn: '123456777', bookQuantity: 10
+      end
+    end
+
+    context 'and you cannot add it due to bad isbn' do
+      let(:book_isbn) { '123456777' }
+      let(:cart_id) { cart_session.cart_id }
+
+      it 'should return not found error' do
         expect(response).to have_http_status(:not_found)
         expect(JSON.parse(response.body)).to eq({"error" => "Couldn't find Book"})
       end
     end
-
-    context 'and the cart is expired' do
-      it 'should respond a header with error' do
-        Timecop.travel 30.minutes.from_now
-        post :add, cartId: '1', bookIsbn: '1234567890', bookQuantity: 10
-      end
-    end
-
   end
 
   context 'When listing a cart' do
@@ -110,4 +123,20 @@ RSpec.describe CartController, type: :controller do
     end
   end
 
+  context 'When 30 or more minutes passed after the creation of the Cart Session' do
+    let!(:cart_session) {CartSession.for!(a_user)}
+
+    before do
+      Timecop.travel 30.minutes.from_now
+    end
+
+    context 'and you request to add a book to the cart' do
+      before do
+        post :add, cartId: cart_session.cart_id, bookIsbn: '1234567890', bookQuantity: 10
+      end
+      it 'should respond with error' do
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+  end
 end

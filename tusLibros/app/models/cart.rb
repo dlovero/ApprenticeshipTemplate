@@ -20,7 +20,7 @@ class Cart < ActiveRecord::Base
   end
 
   def occurrences_of(a_book)
-    item = items.find_by(book: a_book)
+    item = items.find_by!(book: a_book)
     item ? item.amount_of_books : 0
   end
 
