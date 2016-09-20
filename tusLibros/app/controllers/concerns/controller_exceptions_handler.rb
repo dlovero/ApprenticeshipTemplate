@@ -7,7 +7,8 @@ module ControllerExceptionsHandler
       ExpiredCartException => "unprocessable_entity",
       UnauthorizedException => "unauthorized",
       WrongAmountOfBooksException => "bad_request",
-      Exception => "internal_server_error"
+      Exception => "internal_server_error",
+      ActionController::ParameterMissing => "bad_request"
   }
 
   def self.included(a_module)
