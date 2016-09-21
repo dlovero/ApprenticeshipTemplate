@@ -1,0 +1,21 @@
+<div ng-controller="CatalogController">
+    <div class="table-bordered">
+        <h3 class='modal-header'>CATALOGO</h3>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Titulo</th>
+                <th>Isbn</th>
+                <th>Precio</th>
+            </tr>
+            <tbody>
+                <tr ng-repeat="book in catalog">
+                    <td>{{book.title}}</td>
+                    <td>{{book.isbn}}</td>
+                    <td>{{book.price}}</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -36,7 +36,7 @@ angular
             })
             .when('/showCatalog', {
                 templateUrl: 'views/catalog.html',
-                controller: 'BooksController',
+                controller: 'CatalogController',
                 controllerAs: 'catalog'
             })
             .when('/showPurchases',{
@@ -46,7 +46,7 @@ angular
             })
             .when('/showCart', {
                 templateUrl: 'views/list_cart.html',
-                controller: 'CartController',
+                controller: 'ListCartController',
                 controllerAs: 'cart'
             })
             .when('/purchase', {

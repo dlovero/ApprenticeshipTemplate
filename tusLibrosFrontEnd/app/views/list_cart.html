@@ -1,0 +1,22 @@
+<div ng-controller="ListCartController">
+        <div class="table-bordered">
+                <h3 class='modal-header'>Items del carrito</h3>
+                <table class="table">
+                        <thead>
+                        <tr>
+                                <th>Titulo</th>
+                                <th>Isbn</th>
+                                <th>Precio</th>
+                        </tr>
+                        <tbody>
+                        <tr ng-repeat="item in catalog">
+                                <td>{{item.title}}</td>
+                                <td>{{item.isbn}}</td>
+                                <td>{{item.price}}</td>
+                                <td>{{item.amount_of_books}}</td>
+                        </tr>
+
+                        </tbody>
+                </table>
+        </div>
+</div>

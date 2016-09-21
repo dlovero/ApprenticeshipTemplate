@@ -9,7 +9,9 @@ class SaleController < ApplicationController
   private
 
   def show_param
-    {id: params.require(:userId).to_i}
+    {id: params.require(:userId).to_i,
+     password: params.require(:password)
+    }
   end
 
 end
