@@ -17,7 +17,7 @@ angular.module('tusLibrosFrontEndApp')
             $scope.user_id = CartService.submit(user_id, password).then(function(cart_id)
             {
              return $location.path('/main');
-            });
+            }).on_error = $scope.user_id=null, $scope.cart_id=null, $scope.password='';
         }
 
     }]);
