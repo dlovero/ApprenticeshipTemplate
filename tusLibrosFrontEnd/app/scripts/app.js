@@ -21,38 +21,22 @@ angular
         $routeProvider
             .when('/', {
                 templateUrl: 'views/login.html',
-                controller: 'LoginController',
-                controllerAs: 'login'
+                controller: 'LoginController'
+            })
+            .when('/login', {
+                templateUrl: 'views/login.html',
+                controller: 'LoginController'
             })
             .when('/main', {
                 templateUrl: 'views/main.html',
-                controller: 'MainController',
-                controllerAs: 'main'
             })
-            .when('/continueBuying', {
-                templateUrl: 'views/continue.html',
-                controller: 'CartController',
-                controllerAs: 'cart'
-            })
-            .when('/showCatalog', {
-                templateUrl: 'views/catalog.html',
-                controller: 'CatalogController',
-                controllerAs: 'catalog'
-            })
-            .when('/showPurchases',{
-                templateUrl: 'views/all_purchases.html',
-                controller: 'UserController',
-                controllerAs: 'user'
-            })
-            .when('/showCart', {
-                templateUrl: 'views/list_cart.html',
-                controller: 'ListCartController',
-                controllerAs: 'cart'
+            .when('/shopping', {
+                templateUrl: 'views/shopping.html',
+                controller: 'CartController'
             })
             .when('/purchase', {
                 templateUrl: 'views/purchase.html',
-                controller: 'CartController',
-                controllerAs: 'cart'
+                controller: 'CreditCardController'
             })
             .otherwise({
                 redirectTo: '/'

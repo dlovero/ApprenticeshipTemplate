@@ -8,4 +8,12 @@ class Item < ActiveRecord::Base
     book.isbn
   end
 
+  def title
+    book.title
+  end
+
+  def price
+    book.price
+  end
+
 end

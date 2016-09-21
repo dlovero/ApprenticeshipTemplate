@@ -1,3 +1,4 @@
+
 'use strict';
 
 /**
@@ -11,23 +12,33 @@
 angular.module('tusLibrosFrontEndApp')
     .service('CartService', function CartService($http) {
         var self = this;
-        self.cart_id = null;
 ///////////////////////////////////////////////////////////////////////
-        this.submit = function submit(user_id, password) {
+        this.submit = function submit(userId, password) {
             return $http.post('http://localhost:3000/createCart', {
                 login: {
-                    id: user_id,
+                    id: userId,
                     password: password
                 }
             }).then(function (response) {
-                self.cart_id = response.data.cart_id;
+               self.cartId = response.data.cart_id;
             })
-        }
+        };
 ///////////////////////////////////////////////////////////////////////
-        this.list_cart = function list_cart() {
+        this.listCart = function listCart() {
             return $http.get('http://localhost:3000/listCart',
-                {params: {cartId: '1'}}).then(function (response) {
+                {params: {cartId: self.cartId}}
+            ).then(function (response) {
                 return response.data;
             })
-        }
+        };
+///////////////////////////////////////////////////////////////////////
+        this.addBook = function addBook(isbn, amount) {
+            return $http.post('http://localhost:3000/addToCart', {
+                cartId: self.cartId,
+                bookIsbn: isbn,
+                bookQuantity: amount
+            })
+        };
+///////////////////////////////////////////////////////////////////////
+
     });

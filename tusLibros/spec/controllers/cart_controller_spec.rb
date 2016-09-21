@@ -82,7 +82,7 @@ RSpec.describe CartController, type: :controller do
       it 'should respond a JSON with the list of books on that cart' do
         post :show, cartId: '1'
         expect(response).to have_http_status(:ok)
-        expect(JSON.parse(response.body)).to eq([{"isbn" => "1234567890", "amount_of_books" => 10}])
+        expect(JSON.parse(response.body)).to eq([{"title" => "El hombre de la mascara de hierro", "isbn" => "1234567890", "amount_of_books" => 10, "price" => 20.0}])
       end
     end
 

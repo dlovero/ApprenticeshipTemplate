@@ -1,0 +1,49 @@
+<div ng-controller="CartController">
+    <h3 class='modal-header'>CATALOGO</h3>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Titulo</th>
+            <th>Isbn</th>
+            <th>Precio</th>
+            <th>Accion</th>
+        </tr>
+        <tbody>
+        <tr ng-repeat="book in catalog">
+            <td>{{book.title}}</td>
+            <td>{{book.isbn}}</td>
+            <td>{{book.price}}</td>
+            <td><input required type="number" min="1" ng-model="amount"/>
+                <button ng-disabled="amount === undefined" ng-click="addBook(book.isbn,amount)">Agregar</button>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+
+
+    <h3 class='modal-header'>Items del carrito</h3>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Titulo</th>
+            <th>Isbn</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="item in items">
+            <td>{{item.title}}</td>
+            <td>{{item.isbn}}</td>
+            <td>{{item.price}}</td>
+            <td>{{item.amount_of_books}}</td>
+            <td>{{item.price * item.amount_of_books}}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a role="button" href="#/purchase"><button ng-disabled="items.length ===0" class="btn bg-primary">Comprar</button></a>
+
+</div>

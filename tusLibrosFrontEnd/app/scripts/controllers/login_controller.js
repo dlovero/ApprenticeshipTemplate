@@ -9,16 +9,14 @@
  */
 angular.module('tusLibrosFrontEndApp')
     .controller('LoginController', ['$scope', '$location', 'CartService', function LoginController($scope, $location, CartService) {
-        $scope.user_id = 1;
+        $scope.userId = 1;
         $scope.password = "123456";
-        $scope.cart_id = null;
 
-        $scope.login = function login(user_id, password) {
-            CartService.submit(user_id, password).then(function () {
+        $scope.login = function login(userId, password) {
+            CartService.submit(userId, password).then(function (response) {
                 return $location.path('/main');
             }).catch(function () {
-                $scope.user_id = null;
-                $scope.cart_id = null;
+                $scope.userId = null;
                 $scope.password = '';
             });
         }

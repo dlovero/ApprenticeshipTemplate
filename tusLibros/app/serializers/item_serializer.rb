@@ -1,3 +1,3 @@
 class ItemSerializer < ActiveModel::Serializer
-  attributes :isbn, :amount_of_books
+  attributes :title, :isbn, :amount_of_books, :price
 end

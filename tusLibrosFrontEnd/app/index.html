@@ -8,7 +8,7 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -39,23 +39,14 @@
 
                 <ul class="nav navbar-nav">
                     <li><a href="#/main" role="button">Home</a></li>
-                    <li><a href="#/continueBuying" role="button">Seguir comprando</a></li>
+                    <li><a href="#/shopping" role="button">Comprar</a></li>
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false">Menu de compras<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#/showCatalog">Ver catalogo</a></li>
-                            <li><a href="#/showCart">Ver carrito</a></li>
-                            <li><a href="#/showPurchases">Ver todas mis compras</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#/purchase">Pagar</a></li>
-                        </ul>
+                        <a role="button" href="#/purchases" >Mis compras</a>
+
                     </li>
                 </ul>
             </div>
-
             <div class="collapse navbar-collapse" id="js-navbar-collapse">
-
             </div>
         </div>
     </div>
@@ -107,6 +98,9 @@
 <script src="scripts/controllers/saleview_controller.js"></script>
 <script src="scripts/controllers/listcart_controller.js"></script>
 <script src="scripts/controllers/catalog_controller.js"></script>
+<script src="scripts/controllers/purchase_controller.js"></script>
+<script src="scripts/controllers/cart_controller.js"></script>
+<script src="scripts/controllers/creditcard_controller.js"></script>
 <!-- endbuild -->
 </body>
 </html>
