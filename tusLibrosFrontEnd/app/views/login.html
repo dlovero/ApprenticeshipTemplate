@@ -3,9 +3,9 @@
         <h2>Login</h2>
         <form name="form" ng-submit="login(userId,password)" role="form">
             <label>Username</label>
-            <input name="username" placeholder="Username" class="form-control" type="text" ng-model="userId"/>
+            <input required name="username" placeholder="Username" class="form-control" type="text" ng-model="userId"/>
             <label>Password</label>
-            <input name="password" placeholder="Password" class="form-control" ng-model="password" type="password"/>
+            <input required name="password" placeholder="Password" class="form-control" ng-model="password" type="password"/>
             <button ng-disabled="form.$invalid" type="submit" class="btn btn-primary">Enter</button>
             <div ng-show="form.$submitted" style="color:maroon" role="alert">
                 <div>User or password invalid</div>
