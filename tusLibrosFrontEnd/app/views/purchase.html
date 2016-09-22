@@ -1,19 +1,17 @@
-<div ng-controller="CreditCardController">
-
-    <div class="col-xs-pull-11">
-        <h2>Ingrese su tarjeta de credito</h2>
-        <form name="form" ng-submit="login(userId,password)" role="form">
-            <label>Nombre del dueño</label>
-            <input required minlength="1" maxlength="30" placeholder="JUAN PACO PEDRO DE LA MAR" class="form-control" ng-model="creditCardOwner"/>
-            <label>Numero de la tarjeta de credito</label>
-            <input required maxlength="16" placeholder="XXXXXXXXXXXXXXXX" class="form-control" ng-model="creditCardNumber"/>
-            <label>Fecha de expiracion</label>
-            <input required placeholder="DD/MM/YYYY" class="form-control" ng-model="expirationDate" />
-            <button ng-disabled="form.$invalid" type="submit" class="btn btn-primary">Pagar</button>
-            <div  ng-show="form.$submitted" style="color:maroon" role="alert">
+<div class="col-xs-pull-11">
+    <h2>Ingrese su tarjeta de credito</h2>
+    <form ng-submit="checkOut()" role="form">
+        <label>Nombre del dueño</label>
+        <input required ng-minlength="1" ng-maxlength="30" placeholder="JUAN PACO PEDRO DE LA MAR" class="form-control"
+               ng-model="creditCardOwner" type="text"/>
+        <label>Numero de la tarjeta de credito</label>
+        <input required ng-maxlength="16" placeholder="XXXXXXXXXXXXXXXX" class="form-control"
+               ng-model="creditCardNumber" type="number"/>
+        <label>Fecha de expiracion</label>
+        <input required placeholder="DD/MM/YYYY" class="form-control" ng-model="expirationDate" type="text"/>
+        <button ng-disabled="form.$invalid" type="submit" class="btn btn-primary">Comprar</button>
+            <div ng-show="form.$invalid && form.$submitted" style="color:maroon" role="alert">
                 <div>Invalid Credentials</div>
             </div>
-        </form>
-    </div>
-
+    </form>
 </div>

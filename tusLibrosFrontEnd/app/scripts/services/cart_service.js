@@ -1,4 +1,3 @@
-
 'use strict';
 
 /**
@@ -20,7 +19,7 @@ angular.module('tusLibrosFrontEndApp')
                     password: password
                 }
             }).then(function (response) {
-               self.cartId = response.data.cart_id;
+                self.cartId = response.data.cart_id;
             })
         };
 ///////////////////////////////////////////////////////////////////////
@@ -39,6 +38,18 @@ angular.module('tusLibrosFrontEndApp')
                 bookQuantity: amount
             })
         };
-///////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+        this.checkOutCart = function checkout(creditCardOwner, creditCardNumber, expirationDate) {
+            return $http.post('http://localhost:3000/checkOutCart', {
+                    cartId: self.cartId,
+                    credit_card: {
+                        credit_card_number: creditCardNumber,
+                        credit_card_owner: creditCardOwner,
+                        expiration_date: expirationDate
+                    }
+                }).then(function(){
+                  console.log('COBRADO');
+                });
+        };
 
     });
