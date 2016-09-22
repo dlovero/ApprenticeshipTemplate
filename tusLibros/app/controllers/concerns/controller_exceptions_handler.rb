@@ -2,7 +2,6 @@ module ControllerExceptionsHandler
 
   EXCEPTION_MAP = {
       ActiveRecord::RecordNotFound => :not_found,
-      ExpiredCartException => :bad_request,
       ActiveRecord::RecordInvalid => :bad_request,
       ExpiredCartException => :unprocessable_entity,
       UnauthorizedException => :unauthorized,
