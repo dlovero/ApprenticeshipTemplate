@@ -22,7 +22,7 @@ class CartController < ApplicationController
 
   def checkout
     cart_session = CartSession.find_by_cart_id!(cart_id)
-    credit_card = CreditCard.find_or_create_by!(credit_card_params)
+    credit_card = CreditCard.find_or_create!(credit_card_params)
     sale_id=Cashier.new(MerchantProcessor.new).checkout(cart_session, credit_card)
     render json: Sale.find(sale_id), status: :ok
   end

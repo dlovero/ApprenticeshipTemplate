@@ -5,7 +5,7 @@ RSpec.describe SaleController, type: :controller do
     a_user=User.create!(user_name: 'tester', password: '1234567')
     a_book=Book.create!(title: 'El hombre de la mascara de hierro', isbn: '1234567890', price: 25)
     another_book=Book.create!(title: 'El gato negro', isbn: '1231231231', price: 20)
-    a_credit_card=CreditCard.create!(credit_card_owner: 'Pepe Grillo', credit_card_number: '1234567890123456', expiration_date: Date.new(3030, 12, 1), user: a_user)
+    a_credit_card=CreditCard.create!(credit_card_owner: 'Pepe Grillo', credit_card_number: '1234567890123456', expiration_date: Date.new(3030, 12, 1))
     a_cart_session=CartSession.for!(a_user)
     a_cart_session.add(a_book, 10)
     a_cart_session.add(another_book, 11)

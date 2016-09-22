@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   get '/listCart' => 'cart#show'
 
-  get '/checkOutCart' => 'cart#checkout'
+  post '/checkOutCart' => 'cart#checkout'
 
   get '/listPurchases' => 'sale#show'
 

@@ -27,4 +27,9 @@ class CreditCard < ActiveRecord::Base
     errors.add(:expiration_date, CreditCard.error_message_for_expired_credit_card) if expiration_date < Date.today
   end
 
+  def self.find_or_create!(hash)
+    hash[:expiration_date]=Date.parse(hash[:expiration_date])
+    self.find_or_create_by!(hash)
+  end
+
 end

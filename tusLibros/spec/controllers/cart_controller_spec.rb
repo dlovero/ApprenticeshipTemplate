@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe CartController, type: :controller do
-  let(:a_user) { User.create!(user_name: 'tester', password: '1234567') }
+  let!(:a_user) { User.create!(user_name: 'tester', password: '1234567') }
   before do
     Book.create!(title: 'El hombre de la mascara de hierro', isbn: '1234567890', price: 20)
-    CreditCard.create!(credit_card_owner: 'Pepe Grillo', credit_card_number: '1234567890123456', expiration_date: Date.new(3030, 12, 1), user: a_user)
+    CreditCard.create!(credit_card_owner: 'Pepe Grillo', credit_card_number: '1234567890123456', expiration_date: "30/12/3030")
   end
 
   context 'When receiving a request to create a new cart' do
@@ -102,21 +102,21 @@ RSpec.describe CartController, type: :controller do
     end
     context 'and you can check it out' do
       it 'should return a json with the check out data' do
-        post :checkout, {cartId: '1', credit_card: {credit_card_number: '1234567890123456', expiration_date: Date.new(3030, 12, 1), credit_card_owner: 'Pepe Grillo'}}
-        expect(response).to have_http_status(:ok)
+        post :checkout, {cartId: '1', credit_card: {credit_card_number: '1234567890123456', expiration_date: "3030/12", credit_card_owner: 'Pepe Grillo'}}
+          expect(response).to have_http_status(:ok)
         expect(JSON.parse(response.body)).to eq({"transaction_id" => 1})
         expect(CartSession.find_by(user: a_user)).to be_nil #NO MORE SESSION
       end
     end
     context 'and you cannot check it out because the cart is invalid' do
       it 'should return an error' do
-        post :checkout, {cartId: 2, credit_card: {credit_card_number: '1234567890123456', expiration_date: Date.new(3030, 12, 1), credit_card_owner: 'Pepe Grillo'}}
+        post :checkout, {cartId: 2, credit_card: {credit_card_number: '1234567890123456', expiration_date: "3030/12", credit_card_owner: 'Pepe Grillo'}}
         expect(response).to have_http_status(:not_found)
         expect(JSON.parse(response.body)).to eq({"error" => "Couldn't find CartSession"})
       end
 
       it 'should return an error because the credit card is invalid' do
-        post :checkout, {cartId: '1', credit_card: {credit_card_number: '123', expiration_date: Date.new(3030, 12, 1), credit_card_owner: 'Pepe Grillo'}}
+        post :checkout, {cartId: '1', credit_card: {credit_card_number: '123', expiration_date: "3030/12", credit_card_owner: 'Pepe Grillo'}}
         expect(response).to have_http_status(:bad_request)
         expect(JSON.parse(response.body)).to eq({"error" => "Validation failed: Credit card number Invalid credit card number"})
       end
