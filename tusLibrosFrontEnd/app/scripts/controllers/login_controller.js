@@ -13,7 +13,7 @@ angular.module('tusLibrosFrontEndApp')
         $scope.password = "123456";
 
         $scope.login = function login() {
-            CartService.submit($scope.userId, $scope.password).then(function (response) {
+            CartService.submit($scope.userId, $scope.password).then(function () {
                 return $location.path('/main');
             }).catch(function () {
                 $scope.userId = null;
