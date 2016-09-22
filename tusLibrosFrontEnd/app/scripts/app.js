@@ -38,7 +38,14 @@ angular
                 templateUrl: 'views/purchase.html',
                 controller: 'CreditCardController'
             })
+            .when('/all_purchases',{
+                templateUrl: 'views/all_purchases.html',
+                controller: 'UserController'
+            })
+            .when('/not_found',{
+                templateUrl:'404.html'
+            })
             .otherwise({
-                redirectTo: '/'
+                redirectTo: '/not_found'
             });
     });

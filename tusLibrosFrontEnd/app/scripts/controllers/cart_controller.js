@@ -37,7 +37,7 @@ angular.module('tusLibrosFrontEndApp')
             })
         }
 
-        $scope.items = $scope.getItems();
-        $scope.catalog = $scope.getCatalog();
+        $scope.getItems();
+        $scope.getCatalog();
 
     })

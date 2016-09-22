@@ -9,7 +9,7 @@
  */
 
 angular.module('tusLibrosFrontEndApp')
-    .service('CartService', function CartService($http) {
+    .service('CartService', function CartService($http, UserService) {
         var self = this;
 ///////////////////////////////////////////////////////////////////////
         this.submit = function submit(userId, password) {
@@ -20,6 +20,8 @@ angular.module('tusLibrosFrontEndApp')
                 }
             }).then(function (response) {
                 self.cartId = response.data.cart_id;
+                UserService.userId = userId;
+                UserService.password = password;
             })
         };
 ///////////////////////////////////////////////////////////////////////
@@ -41,15 +43,13 @@ angular.module('tusLibrosFrontEndApp')
 ////////////////////////////////////////////////////////////////////////
         this.checkOutCart = function checkout(creditCardOwner, creditCardNumber, expirationDate) {
             return $http.post('http://localhost:3000/checkOutCart', {
-                    cartId: self.cartId,
-                    credit_card: {
-                        credit_card_number: creditCardNumber,
-                        credit_card_owner: creditCardOwner,
-                        expiration_date: expirationDate
-                    }
-                }).then(function(){
-                  console.log('COBRADO');
-                });
+                cartId: self.cartId,
+                credit_card: {
+                    credit_card_number: creditCardNumber,
+                    credit_card_owner: creditCardOwner,
+                    expiration_date: expirationDate
+                }
+            });
         };
 
     });

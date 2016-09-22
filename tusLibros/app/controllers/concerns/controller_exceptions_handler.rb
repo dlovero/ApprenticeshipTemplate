@@ -8,6 +8,7 @@ module ControllerExceptionsHandler
       UnauthorizedException => :unauthorized,
       WrongAmountOfBooksException => :bad_request,
       ActionController::ParameterMissing => :bad_request,
+      ArgumentError => :bad_request
   }
   EXCEPTION_MAP.default=:internal_server_error
 
