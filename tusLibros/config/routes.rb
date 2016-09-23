@@ -1,17 +1,17 @@
 Rails.application.routes.draw do
 
 
-  post '/createCart' => 'cart#create'
+  post '/carts' => 'cart#create'
 
-  post '/addToCart' => 'cart#add'
+  post '/carts/:cartId' => 'cart#add'
 
-  get '/listCart' => 'cart#show'
+  get '/carts/:cartId' => 'cart#show'
 
-  post '/checkOutCart' => 'cart#checkout'
+  post '/sales' => 'cart#checkout'
 
-  get '/listPurchases' => 'sale#show'
+  get '/sales/:userId' => 'sale#show'
 
-  get '/listCatalog' => 'book#index'
+  get '/catalog' => 'book#index'
 
 
   # The priority is based upon order of creation: first created -> highest priority.
