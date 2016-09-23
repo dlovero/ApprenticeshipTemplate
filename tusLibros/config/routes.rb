@@ -3,15 +3,15 @@ Rails.application.routes.draw do
 
   post '/carts' => 'cart#create'
 
-  post '/carts/:cartId' => 'cart#add'
+  post '/carts/:cartId/addBook' => 'cart#add'
 
   get '/carts/:cartId' => 'cart#show'
 
   post '/sales' => 'cart#checkout'
 
-  get '/sales/:userId' => 'sale#show'
+  get '/sales/:userId/index' => 'sale#show'
 
-  get '/catalog' => 'book#index'
+  get '/books' => 'book#index'
 
 
   # The priority is based upon order of creation: first created -> highest priority.

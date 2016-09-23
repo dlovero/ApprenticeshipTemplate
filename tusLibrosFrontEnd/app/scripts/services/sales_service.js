@@ -8,7 +8,7 @@
  * Service in the tusLibrosFrontEndApp.
  */
 angular.module('tusLibrosFrontEndApp')
-    .service('UserService', function UserService($http, $location, BACKEND_URL) {
+    .service('SalesService', function SalesService($http, $location, BACKEND_URL) {
         var self = this;
         self.userId = null;
         self.password = "";

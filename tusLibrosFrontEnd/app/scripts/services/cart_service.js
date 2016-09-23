@@ -9,33 +9,24 @@
  */
 
 angular.module('tusLibrosFrontEndApp')
-    .service('CartService', function CartService($http, UserService, BACKEND_URL) {
+    .service('CartService', function CartService($http, CartProvider, SalesService, BACKEND_URL) {
+
             var self = this;
-            self.cartId = null;
-///////////////////////////////////////////////////////////////////////
-            this.submit = function submit(userId, password) {
-                return $http.post(BACKEND_URL + 'createCart', {
-                    login: {
-                        id: userId,
-                        password: password
-                    }
-                }).then(function (response) {
-                    self.cartId = response.data.cart_id;
-                    UserService.update(userId,password);
-                })
+            self.currentCart = null;
+
+            self.login = function login(userId, password) {
+                self.currentCart = CartProvider.new(userId, password);
+                return self.currentCart.$save();
             };
+
 ///////////////////////////////////////////////////////////////////////
             this.listCart = function listCart() {
-                return $http.get(BACKEND_URL + 'listCart',
-                    {params: {cartId: self.cartId}}
-                ).then(function (response) {
-                    return response.data;
-                })
+                return self.currentCart.$get();
+
             };
 ///////////////////////////////////////////////////////////////////////
             this.addBook = function addBook(isbn, amount) {
-                return $http.post(BACKEND_URL + 'addToCart', {
-                    cartId: self.cartId,
+               return  self.currentCart.$addBook({
                     bookIsbn: isbn,
                     bookQuantity: amount
                 })
@@ -53,4 +44,5 @@ angular.module('tusLibrosFrontEndApp')
             };
 
         }
-    );
+    )
+;

@@ -8,7 +8,7 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -36,13 +36,12 @@
                 </button>
 
                 <a class="navbar-brand" ng-href="#/main">TUS LIBROS</a>
-
-                <ul class="nav navbar-nav">
-                    <li><a href="#/main" role="button">Home</a></li>
-                    <li><a href="#/shopping" role="button">Comprar</a></li>
-                    <li><a href="#/all_purchases" >Mis compras</a></li>
-                </ul>
-            </div>
+                    <ul class="nav navbar-nav">
+                        <li><a href="#/main" role="button">Home</a></li>
+                        <li><a href="#/shopping" role="button">Comprar</a></li>
+                        <li><a href="#/all_purchases">Mis compras</a></li>
+                    </ul>
+                </div>
             <div class="collapse navbar-collapse" id="js-navbar-collapse">
             </div>
         </div>
@@ -99,8 +98,9 @@
 <script src="scripts/controllers/cart_controller.js"></script>
 <script src="scripts/controllers/creditcard_controller.js"></script>
 <script src="scripts/controllers/user_controller.js"></script>
-<script src="scripts/services/user_service.js"></script>
+<script src="scripts/services/sales_service.js"></script>
 <script src="scripts/services/backendurl_constant.js"></script>
+<script src="scripts/services/cart_provider.js"></script>
 <!-- endbuild -->
 </body>
 </html>

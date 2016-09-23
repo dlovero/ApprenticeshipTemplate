@@ -13,7 +13,7 @@
         <td>{{book.isbn}}</td>
         <td>{{book.price}}</td>
         <td><input required type="number" min="1" ng-model="amount"/>
-            <button ng-disabled="amount === undefined" ng-click="addBook(book.isbn,amount)">Agregar</button>
+            <button ng-disabled="amount === undefined" ng-click="addBook(book,amount)">Agregar</button>
         </td>
     </tr>
 
@@ -33,7 +33,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="item in items">
+    <tr ng-repeat="item in cart.items">
         <td>{{item.title}}</td>
         <td>{{item.isbn}}</td>
         <td>{{item.price}}</td>

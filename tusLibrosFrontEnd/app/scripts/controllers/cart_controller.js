@@ -8,16 +8,28 @@
  * Controller of the tusLibrosFrontEndApp
  */
 angular.module('tusLibrosFrontEndApp')
-    .controller('CartController', function ($scope, $location, CartService, BookService, UserService, zarasa) {
+    .controller('CartController', function ($scope, $location, CartService, BookService) {
 
+        $scope.cart = CartService.cart;
 
-        if (CartService.cartId === null) {
+        if (CartService.currentCart === null) {
             return $location.path('/login');
         }
 
-        $scope.addBook = function AddBook(isbn, amount) {
-            CartService.addBook(isbn, amount).then(function (response) {
-                $scope.getItems();
+        $scope.addBook = function addBook(bookSelected, amount) {
+            CartService.addBook(bookSelected.isbn, amount).then(function () {
+                var itemsOfACart = $scope.cart.items.filter(function (item) {
+                   return item.isbn === bookSelected.isbn;
+                });
+                debugger
+                if (itemsOfACart.length === 0) {
+                    $scope.cart.items.push({
+                        title: bookSelected.title, isbn: bookSelected.isbn,
+                        amount_of_books: amount, price: bookSelected.price
+                    });
+                } else {
+                    itemsOfACart[0].amount_of_books = itemsOfACart[0].amount_of_books+amount;
+                }
             }).catch(function (response) {
                 alert(response.data.error);
                 $location.path("/login");
@@ -26,10 +38,10 @@ angular.module('tusLibrosFrontEndApp')
 
         $scope.getItems = function () {
             CartService.listCart().then(function list_response(listOfItems) {
-                $scope.items = listOfItems;
+
             }).catch(function (response) {
-                    alert(response.data.error);
-                    $location.path("/login");
+                alert(response.data.error);
+                $location.path("/login");
             })
         };
 
