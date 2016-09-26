@@ -7,7 +7,7 @@ class Sale < ActiveRecord::Base
     all_sales=Sale.where(user: user)
     all_sales.reduce([]) do |all_items, sale|
       all_items+=sale.items
-    end
+    end.reverse!
   end
 
   def self.register_new_sale!(a_credit_card, a_cart_session)
