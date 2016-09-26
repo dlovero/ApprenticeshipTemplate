@@ -13,6 +13,7 @@ angular.module('tusLibrosFrontEndApp')
         $scope.userId = 1;
         $scope.password = "123456";
 
+        $scope.UserService = UserService;
 
         $scope.login = function login() {
             CartService.createCart($scope.userId, $scope.password).then(function () {

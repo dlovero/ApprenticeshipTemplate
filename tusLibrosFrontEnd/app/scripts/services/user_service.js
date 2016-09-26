@@ -12,10 +12,18 @@ angular.module('tusLibrosFrontEndApp')
 
         var self = this;
 
+        self.userId=null;
+        self.password=null;
+
         self.set_user_and_password = function (userId, password) {
             self.userId = userId;
             self.password = password;
         };
+
+        self.logOut = function logOut(){
+            self.userId=null;
+            self.password=null;
+        }
 
 
         self.listPurchases = function listPurchases() {

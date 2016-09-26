@@ -17,14 +17,14 @@ angular.module('tusLibrosFrontEndApp')
             CartService.addBook(bookSelected.isbn, amount).then(function () {
             }).catch(function (response) {
                 alert(response.data.error);
-                $location.path("/createCart");
+                $location.path("/login");
             })
         };
 
         $scope.getItems = function () {
-            CartService.listCart().catch(function (response) {
-                alert(response.data.error);
-                $location.path("/createCart");
+            CartService.listCart().catch(function () {
+                alert('Vuelva a ingresar para volver a comprar');
+                $location.path("/login");
             })
         };
 

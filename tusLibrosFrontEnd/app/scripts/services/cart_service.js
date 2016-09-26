@@ -9,7 +9,7 @@
  */
 
 angular.module('tusLibrosFrontEndApp')
-    .service('CartService', function CartService($http, CartProvider, UserService, BACKEND_URL) {
+    .service('CartService', function CartService($http, CartProvider) {
 
             var self = this;
             self.currentCart = null;
@@ -39,7 +39,7 @@ angular.module('tusLibrosFrontEndApp')
                     credit_card_number: creditCardNumber,
                     credit_card_owner: creditCardOwner,
                     expiration_date: expirationDate
-                };
+                }
                 return self.currentCart.$checkout();
             };
 
