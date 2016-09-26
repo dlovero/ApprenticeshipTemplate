@@ -9,13 +9,13 @@
  */
 
 angular.module('tusLibrosFrontEndApp')
-    .service('CartService', function CartService($http, CartProvider, SalesService, BACKEND_URL) {
+    .service('CartService', function CartService($http, CartProvider, UserService, BACKEND_URL) {
 
             var self = this;
             self.currentCart = null;
 
 
-            self.login = function login(userId, password) {
+            self.createCart = function createCart(userId, password) {
                 self.currentCart = CartProvider.new(userId, password);
                 return self.currentCart.$save();
             };
@@ -28,21 +28,19 @@ angular.module('tusLibrosFrontEndApp')
 
 ///////////////////////////////////////////////////////////////////////
             this.addBook = function addBook(isbn, amount) {
-               return  self.currentCart.$addBook({
+                return self.currentCart.$addBook({
                     bookIsbn: isbn,
                     bookQuantity: amount
                 })
             };
 ////////////////////////////////////////////////////////////////////////
-            this.checkOutCart = function checkout(creditCardOwner, creditCardNumber, expirationDate) {
-                return $http.post(BACKEND_URL + 'checkOutCart', {
-                    cartId: self.cartId,
-                    credit_card: {
-                        credit_card_number: creditCardNumber,
-                        credit_card_owner: creditCardOwner,
-                        expiration_date: expirationDate
-                    }
-                });
+            this.checkout = function checkout(creditCardOwner, creditCardNumber, expirationDate) {
+                self.currentCart.credit_card = {
+                    credit_card_number: creditCardNumber,
+                    credit_card_owner: creditCardOwner,
+                    expiration_date: expirationDate
+                };
+                return self.currentCart.$checkout();
             };
 
         }

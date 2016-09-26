@@ -28,8 +28,9 @@ class CartController < ApplicationController
   end
 
   private
+
   def credit_card_params
-    params.require(:credit_card).permit(:credit_card_number, :credit_card_owner, :expiration_date)
+   params.require(:credit_card).permit(:credit_card_number,:credit_card_owner,:expiration_date)
   end
 
   def create_params

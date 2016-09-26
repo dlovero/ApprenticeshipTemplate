@@ -11,7 +11,7 @@ angular.module('tusLibrosFrontEndApp')
   .controller('MainController', function MainController($location,CartService){
 
       if (CartService.currentCart === null) {
-         return $location.path('/login');
+         return $location.path('/createCart');
       }
 
   });

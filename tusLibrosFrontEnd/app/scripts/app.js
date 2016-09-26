@@ -20,7 +20,7 @@ angular
     .config(function ($routeProvider) {
         $routeProvider
             .when('/', {
-                templateUrl: 'views/login.html',
+                templateUrl: 'views/createCart.html',
                 controller: 'LoginController'
             })
             .when('/login', {
@@ -47,6 +47,6 @@ angular
                 templateUrl:'404.html'
             })
             .otherwise({
-                redirectTo: '/not_found'
+                redirectTo: '/login'
             });
     });

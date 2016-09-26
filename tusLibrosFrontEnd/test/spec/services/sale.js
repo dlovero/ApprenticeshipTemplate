@@ -1,18 +1,18 @@
 'use strict';
 
-describe('Service: createCart', function () {
+describe('Service: Sale', function () {
 
   // load the service's module
   beforeEach(module('tusLibrosFrontEndApp'));
 
   // instantiate service
-  var login;
-  beforeEach(inject(function (_login_) {
-    login = _login_;
+  var Sale;
+  beforeEach(inject(function (_Sale_) {
+    Sale = _Sale_;
   }));
 
   it('should do something', function () {
-    expect(!!login).toBe(true);
+    expect(!!Sale).toBe(true);
   });
 
 });

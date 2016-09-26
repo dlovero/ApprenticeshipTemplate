@@ -7,9 +7,9 @@ Rails.application.routes.draw do
 
   get '/carts/:cartId' => 'cart#show'
 
-  post '/sales' => 'cart#checkout'
+  post '/carts/:cartId/checkout' => 'cart#checkout'
 
-  get '/sales/:userId/index' => 'sale#show'
+  get '/users/:userId/sales' => 'sale#show'
 
   get '/books' => 'book#index'
 

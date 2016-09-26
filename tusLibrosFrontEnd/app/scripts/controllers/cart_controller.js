@@ -14,34 +14,21 @@ angular.module('tusLibrosFrontEndApp')
         $scope.cart = CartService.currentCart;
 
         if (CartService.currentCart === null) {
-            return $location.path('/login');
+            return $location.path('/createCart');
         }
 
         $scope.addBook = function addBook(bookSelected, amount) {
             CartService.addBook(bookSelected.isbn, amount).then(function () {
-     /*           var itemsOfACart = $scope.cart.items.filter(function (item) {
-                   return item.isbn === bookSelected.isbn;
-                });
-                if (itemsOfACart.length === 0) {
-                    $scope.cart.items.push({
-                        title: bookSelected.title, isbn: bookSelected.isbn,
-                        amount_of_books: amount, price: bookSelected.price
-                    });
-                } else {
-                    itemsOfACart[0].amount_of_books = itemsOfACart[0].amount_of_books+amount;
-              } */
             }).catch(function (response) {
                 alert(response.data.error);
-                $location.path("/login");
+                $location.path("/createCart");
             })
         };
 
         $scope.getItems = function () {
-            CartService.listCart().then(function list_response(listOfItems) {
-
-            }).catch(function (response) {
+            CartService.listCart().catch(function (response) {
                 alert(response.data.error);
-                $location.path("/login");
+                $location.path("/createCart");
             })
         };
 
@@ -59,3 +46,18 @@ angular.module('tusLibrosFrontEndApp')
         $scope.getCatalog();
 
     });
+
+
+
+
+/*           var itemsOfACart = $scope.cart.items.filter(function (item) {
+ return item.isbn === bookSelected.isbn;
+ });
+ if (itemsOfACart.length === 0) {
+ $scope.cart.items.push({
+ title: bookSelected.title, isbn: bookSelected.isbn,
+ amount_of_books: amount, price: bookSelected.price
+ });
+ } else {
+ itemsOfACart[0].amount_of_books = itemsOfACart[0].amount_of_books+amount;
+ } */

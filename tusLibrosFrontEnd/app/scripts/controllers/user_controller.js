@@ -8,14 +8,14 @@
  * Controller of the tusLibrosFrontEndApp
  */
 angular.module('tusLibrosFrontEndApp')
-    .controller('UserController', function UserController($scope, $location, SalesService, CartService) {
+    .controller('UserController', function UserController($scope, $location, CartService, UserService) {
 
         if (CartService.currentCart === null) {
-           return $location.path('/login');
+           return $location.path('/createCart');
         }
 
         $scope.listPurchases = function listPurchases() {
-            return SalesService.listPurchases().then(function (result) {
+            return UserService.listPurchases().then(function (result) {
                 $scope.purchases = result;
             }).catch(function (response) {
                 alert(response.data.error);
