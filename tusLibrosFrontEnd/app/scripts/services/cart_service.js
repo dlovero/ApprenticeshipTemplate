@@ -25,6 +25,7 @@ angular.module('tusLibrosFrontEndApp')
                 return self.currentCart.$get();
 
             };
+
 ///////////////////////////////////////////////////////////////////////
             this.addBook = function addBook(isbn, amount) {
                return  self.currentCart.$addBook({

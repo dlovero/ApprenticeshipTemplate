@@ -12,12 +12,12 @@ class CartController < ApplicationController
     book = Book.find_by_isbn!(book_isbn)
     cart_session = CartSession.find_by_cart_id!(cart_id)
     cart_session.add(book, book_quantity)
-    render json: :nothing, status: :ok
+    render json: cart_session, status: :ok
   end
 
   def show
     cart_session = CartSession.find_by_cart_id!(cart_id)
-    render json: cart_session.items, status: :ok
+    render json: cart_session, status: :ok
   end
 
   def checkout
