@@ -8,7 +8,7 @@
  * Controller of the tusLibrosFrontEndApp
  */
 angular.module('tusLibrosFrontEndApp')
-    .controller('UserController', function UserController($scope, $location, CartService, UserService) {
+    .controller('UserController', function UserController($scope, $location, allPurchases, CartService, UserService) {
 
         if (CartService.currentCart === null) {
            return $location.path('/createCart');
@@ -23,5 +23,5 @@ angular.module('tusLibrosFrontEndApp')
             });
         };
 
-        $scope.listPurchases();
+        $scope.purchases=allPurchases;
     });

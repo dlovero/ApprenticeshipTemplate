@@ -6,7 +6,7 @@ angular.module('tusLibrosFrontEndApp')
         $scope.creditCardNumber = "";
         $scope.expirationDate = null;
         $scope.checkOut = function checkOut() {
-            CartService.checkout($scope.creditCardOwner, $scope.creditCardNumber, $scope.expirationDate)
+            CartService.checkout($scope.creditCardOwner.toUpperCase(), $scope.creditCardNumber, $scope.expirationDate)
                 .then(function () {
                     $location.path("/all_purchases");
                 }).catch(function (response) {

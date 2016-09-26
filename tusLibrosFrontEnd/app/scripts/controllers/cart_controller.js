@@ -8,10 +8,10 @@
  * Controller of the tusLibrosFrontEndApp
  */
 angular.module('tusLibrosFrontEndApp')
-    .controller('CartController', function ($scope, $location, CartService, BookService) {
+    .controller('CartController', function ($scope, $location, catalog, cart, CartService, BookService) {
 
 
-        $scope.cart = CartService.currentCart;
+        $scope.cart = cart;
 
         if (CartService.currentCart === null) {
             return $location.path('/createCart');
@@ -41,9 +41,7 @@ angular.module('tusLibrosFrontEndApp')
             })
         };
 
-
-        $scope.getItems();
-        $scope.getCatalog();
+        $scope.catalog = catalog;
 
     });
 

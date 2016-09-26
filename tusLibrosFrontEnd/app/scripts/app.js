@@ -33,18 +33,37 @@ angular
             })
             .when('/shopping', {
                 templateUrl: 'views/shopping.html',
-                controller: 'CartController'
+                controller: 'CartController',
+                resolve: {
+                    catalog: function (BookService) {
+                        return BookService.getCatalog().catch(function (response) {
+                            alert(response.data.error);
+                            $scope.catalog = [];
+                        })
+                    },
+                    cart: function (CartService) {
+                        return CartService.currentCart;
+                    }
+                }
             })
             .when('/purchase', {
                 templateUrl: 'views/purchase.html',
                 controller: 'CreditCardController'
             })
-            .when('/all_purchases',{
+            .when('/all_purchases', {
                 templateUrl: 'views/all_purchases.html',
-                controller: 'UserController'
+                controller: 'UserController',
+                resolve: {
+                    allPurchases: function (UserService) {
+                        return UserService.listPurchases().catch(function (response) {
+                            alert(response.data.error);
+                            $scope.purchases = [];
+                        })
+                    }
+                }
             })
-            .when('/not_found',{
-                templateUrl:'404.html'
+            .when('/not_found', {
+                templateUrl: '404.html'
             })
             .otherwise({
                 redirectTo: '/login'
