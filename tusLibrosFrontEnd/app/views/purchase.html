@@ -1,17 +1,33 @@
 <div class="col-xs-pull-11">
     <h2>Ingrese su tarjeta de credito</h2>
-    <form ng-submit="checkOut()" role="form">
-        <label>Nombre del dueño</label>
-        <input required ng-minlength="1" ng-maxlength="30" placeholder="JUAN PACO PEDRO DE LA MAR" class="form-control"
-               ng-model="creditCardOwner" type="text"/>
-        <label>Numero de la tarjeta de credito</label>
-        <input ng-required="number" ng-maxlength="16" placeholder="XXXXXXXXXXXXXXXX" class="form-control"
-               ng-model="creditCardNumber" type="text"/>
-        <label>Fecha de expiracion</label>
-        <input placeholder="YYYY/MM" class="form-control" ng-model="expirationDate" type="text"/>
+    <form ng-submit="checkOut()" name="form" role="form" novalidate>
+        <div ng-class="{'has-error': form.owner.$touched && form.owner.$invalid,
+                        'has-success':form.owner.$touched && form.owner.$valid}">
+            <label>Nombre del dueño</label>
+            <input required name="owner" ng-pattern="/^[a-zA-Z]{2,30}$/"
+                   placeholder="JUAN PACO PEDRO DE LA MAR"
+                   ng-model="creditCardOwner" type="text" class="form-control"/>
+            <span ng-show="form.owner.$touched && form.owner.$invalid" class="alert-danger">Wrong username.</span>
+        </div>
+        <div ng-class="{'has-error': form.cardnumber.$touched && form.cardnumber.$invalid,
+                        'has-success':form.cardnumber.$touched && form.cardnumber.$valid}">
+            <label>Numero de la tarjeta de credito</label>
+            <input required name="cardnumber" ng-pattern="/^\d{16}$/"
+                   placeholder="XXXXXXXXXXXXXXXX" maxlength="16"
+                   ng-model="creditCardNumber" type="text" class="form-control"/>
+            <span ng-show="form.cardnumber.$touched && form.cardnumber.$invalid" class="alert-danger">Wrong credit card number.</span>
+        </div>
+        <div ng-class="{'has-error': form.date.$touched && form.date.$invalid,
+                        'has-success':form.date.$touched && form.date.$valid}">
+            <label>Fecha de expiracion</label>
+            <input required name="date" ng-pattern="/\d{4}/\d{2}/"
+                   placeholder="YYYY/MM" class="form-control" ng-model="expirationDate" type="text"
+                   class="form-control"/>
+            <span ng-show="form.date.$touched && form.date.$invalid" class="alert-danger">Wrong expiration date.</span>
+        </div>
         <button ng-disabled="form.$invalid" type="submit" class="btn btn-primary">Comprar</button>
-            <div ng-show="form.$invalid && form.$submitted" style="color:maroon" role="alert">
-                <div>Invalid Credentials</div>
-            </div>
+        <div ng-show="form.$invalid && form.$submitted" style="color:maroon" role="alert">
+            <div>Invalid Credentials</div>
+        </div>
     </form>
 </div>

@@ -4,7 +4,7 @@
         <label>Username</label>
         <input required name="username" placeholder="Username" class="form-control" type="text" ng-model="userId"/>
         <label>Password</label>
-        <input required name="password" placeholder="Password" class="form-control" ng-model="password"
+        <input required name="password" minlength="6" placeholder="Password" class="form-control" ng-model="password"
                type="password"/>
         <button ng-disabled="form.$invalid" type="submit" class="btn btn-primary">Enter</button>
         <div ng-show="form.$invalid && form.$submitted" style="color:maroon" role="alert">
