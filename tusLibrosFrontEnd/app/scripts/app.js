@@ -29,6 +29,7 @@ angular
             })
             .when('/main', {
                 templateUrl: 'views/main.html',
+                controller: 'MainController'
             })
             .when('/shopping', {
                 templateUrl: 'views/shopping.html',
