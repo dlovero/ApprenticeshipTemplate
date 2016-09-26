@@ -13,10 +13,6 @@ angular.module('tusLibrosFrontEndApp')
 
         $scope.cart = cart;
 
-        if (CartService.currentCart === null) {
-            return $location.path('/createCart');
-        }
-
         $scope.addBook = function addBook(bookSelected, amount) {
             CartService.addBook(bookSelected.isbn, amount).then(function () {
             }).catch(function (response) {

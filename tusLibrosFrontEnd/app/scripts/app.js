@@ -18,6 +18,7 @@ angular
         'ngTouch'
     ])
     .config(function ($routeProvider) {
+
         $routeProvider
             .when('/', {
                 templateUrl: 'views/createCart.html',
@@ -29,35 +30,56 @@ angular
             })
             .when('/main', {
                 templateUrl: 'views/main.html',
-                controller: 'MainController'
+                resolve: {
+                    user: function(CartService,$location){
+                        if (CartService.currentCart === null) {
+                            return $location.path('/login');
+                        }
+                    }
+                }
             })
             .when('/shopping', {
                 templateUrl: 'views/shopping.html',
                 controller: 'CartController',
                 resolve: {
-                    catalog: function (BookService) {
+                    catalog: function (BookService,$location,CartService) {
+                        if (CartService.currentCart === null) {
+                            return $location.path('/login');
+                        }
                         return BookService.getCatalog().catch(function (response) {
                             alert(response.data.error);
-                            $scope.catalog = [];
+                             return [];
                         })
                     },
-                    cart: function (CartService) {
+                    cart: function (CartService,$location) {
+                        if (CartService.currentCart === null) {
+                            return $location.path('/login');
+                        }
                         return CartService.currentCart;
                     }
                 }
             })
             .when('/purchase', {
                 templateUrl: 'views/purchase.html',
-                controller: 'CreditCardController'
-            })
+                controller: 'CreditCardController',
+                resolve: {
+                    user:  function(CartService,$location){
+                        if (CartService.currentCart === null) {
+                            return $location.path('/login');
+                        }
+                }
+            }})
             .when('/all_purchases', {
                 templateUrl: 'views/all_purchases.html',
                 controller: 'UserController',
                 resolve: {
-                    allPurchases: function (UserService) {
+                    allPurchases: function (UserService,$location,CartService) {
+                        if (CartService.currentCart === null) {
+                            return $location.path('/login');
+                        }
                         return UserService.listPurchases().catch(function (response) {
                             alert(response.data.error);
-                            $scope.purchases = [];
+                            return[];
                         })
                     }
                 }
@@ -66,6 +88,6 @@ angular
                 templateUrl: '404.html'
             })
             .otherwise({
-                redirectTo: '/login'
+                redirectTo: '/404.html'
             });
-    });
+    })
