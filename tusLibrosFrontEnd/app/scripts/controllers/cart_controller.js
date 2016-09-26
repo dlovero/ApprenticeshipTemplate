@@ -10,7 +10,8 @@
 angular.module('tusLibrosFrontEndApp')
     .controller('CartController', function ($scope, $location, CartService, BookService) {
 
-        $scope.cart = CartService.cart;
+
+        $scope.cart = CartService.currentCart;
 
         if (CartService.currentCart === null) {
             return $location.path('/login');
@@ -18,10 +19,9 @@ angular.module('tusLibrosFrontEndApp')
 
         $scope.addBook = function addBook(bookSelected, amount) {
             CartService.addBook(bookSelected.isbn, amount).then(function () {
-                var itemsOfACart = $scope.cart.items.filter(function (item) {
+     /*           var itemsOfACart = $scope.cart.items.filter(function (item) {
                    return item.isbn === bookSelected.isbn;
                 });
-                debugger
                 if (itemsOfACart.length === 0) {
                     $scope.cart.items.push({
                         title: bookSelected.title, isbn: bookSelected.isbn,
@@ -29,7 +29,7 @@ angular.module('tusLibrosFrontEndApp')
                     });
                 } else {
                     itemsOfACart[0].amount_of_books = itemsOfACart[0].amount_of_books+amount;
-                }
+              } */
             }).catch(function (response) {
                 alert(response.data.error);
                 $location.path("/login");

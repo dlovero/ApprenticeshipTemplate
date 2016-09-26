@@ -14,6 +14,7 @@ angular.module('tusLibrosFrontEndApp')
             var self = this;
             self.currentCart = null;
 
+
             self.login = function login(userId, password) {
                 self.currentCart = CartProvider.new(userId, password);
                 return self.currentCart.$save();
