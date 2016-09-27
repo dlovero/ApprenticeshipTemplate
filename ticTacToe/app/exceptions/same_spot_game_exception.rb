@@ -1,0 +1,2 @@
+class SameSpotGameException < Exception
+end
