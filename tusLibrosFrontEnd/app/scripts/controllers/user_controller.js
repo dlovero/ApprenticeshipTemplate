@@ -14,12 +14,12 @@ angular.module('tusLibrosFrontEndApp')
 
         $scope.listPurchases = function listPurchases() {
             return UserService.listPurchases().then(function (result) {
-                $scope.purchases = result;
+                $scope.items = result;
             }).catch(function (response) {
                 alert(response.data.error);
-                $scope.purchases = [];
+                $scope.items = [];
             });
         };
 
-        $scope.purchases=allPurchases;
+        $scope.items=allPurchases;
     });

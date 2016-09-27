@@ -10,7 +10,6 @@
 angular.module('tusLibrosFrontEndApp')
     .controller('CartController', function ($scope, $location, catalog, cart, CartService, BookService) {
 
-
         $scope.cart = cart;
 
         $scope.addBook = function addBook(bookSelected, amount) {
@@ -38,7 +37,6 @@ angular.module('tusLibrosFrontEndApp')
         };
 
         $scope.catalog = catalog;
-
     });
 
 

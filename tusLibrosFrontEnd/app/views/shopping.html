@@ -25,20 +25,20 @@
 <table class="table">
     <thead>
     <tr>
-        <th>Titulo</th>
+        <th>Title</th>
         <th>Isbn</th>
-        <th>Precio</th>
         <th>Cantidad</th>
+        <th>Precio</th>
         <th>Total</th>
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="item in cart.items">
-        <td>{{item.title}}</td>
-        <td>{{item.isbn}}</td>
-        <td>{{item.price}}</td>
-        <td>{{item.amount_of_books}}</td>
-        <td>{{item.price * item.amount_of_books}}</td>
+    <tr ng-repeat="something in cart.items">
+        <td>{{something.title}}</td>
+        <td>{{something.isbn}}</td>
+        <td>{{something.amount_of_books}}</td>
+        <td>{{something.price}}</td>
+        <td>{{something.price * something.amount_of_books}}</td>
     </tr>
     </tbody>
 </table>

@@ -1,21 +1,3 @@
 <h3 class='modal-header'>Todas tus compras</h3>
-<table class="table">
-    <thead>
-    <tr>
-        <th>Title</th>
-        <th>Isbn</th>
-        <th>Cantidad</th>
-        <th>Precio</th>
-        <th>Total</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="purchase in purchases">
-        <td>{{purchase.title}}</td>
-        <td>{{purchase.isbn}}</td>
-        <td>{{purchase.amount_of_books}}</td>
-        <td>{{purchase.price}}</td>
-        <td>{{purchase.price * purchase.amount_of_books}}</td>
-    </tr>
-    </tbody>
+<custom-table></custom-table>
 </table>
