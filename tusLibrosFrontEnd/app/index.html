@@ -8,7 +8,8 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="bower_components/ngToast/dist/ngToast.css"/>
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -26,24 +27,14 @@
     <div class="navbar navbar-default" role="navigation">
         <div class="container">
             <div class="navbar-header">
-
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                        data-target="#js-navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
                 <a class="navbar-brand" ng-href="#/main">TUS LIBROS</a>
-                    <div ng-controller="LoginController" ng-show="UserService.userId != null">
-                        <ul class="nav navbar-nav">
+                <div ng-controller="LoginController" ng-show="UserService.userId != null">
+                    <ul class="nav navbar-nav">
                         <li><a href="#/main" role="button">Home</a></li>
                         <li><a href="#/shopping" role="button">Comprar</a></li>
                         <li><a href="#/all_purchases">Mis compras</a></li>
                     </ul>
-                    </div>
                 </div>
-            <div class="collapse navbar-collapse" id="js-navbar-collapse">
             </div>
         </div>
     </div>
@@ -83,29 +74,21 @@
 <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
 <script src="bower_components/angular-touch/angular-touch.js"></script>
 <script src="bower_components/lodash/lodash.js"></script>
+<script src="bower_components/ngToast/dist/ngToast.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
 <!-- build:js({.tmp,app}) scripts/scripts.js -->
 <script src="scripts/app.js"></script>
-<script src="scripts/controllers/main_controller.js"></script>
-<script src="scripts/controllers/about.js"></script>
 <script src="scripts/controllers/login_controller.js"></script>
 <script src="scripts/services/cart_service.js"></script>
 <script src="scripts/services/book_service.js"></script>
-<script src="scripts/controllers/saleview_controller.js"></script>
-<script src="scripts/controllers/listcart_controller.js"></script>
-<script src="scripts/controllers/catalog_controller.js"></script>
-<script src="scripts/controllers/purchase_controller.js"></script>
 <script src="scripts/controllers/cart_controller.js"></script>
 <script src="scripts/controllers/creditcard_controller.js"></script>
 <script src="scripts/controllers/user_controller.js"></script>
 <script src="scripts/services/user_service.js"></script>
 <script src="scripts/services/backendurl_constant.js"></script>
 <script src="scripts/services/cart_provider.js"></script>
-<script src="scripts/controllers/main_controller.js"></script>
-<script src="scripts/services/sale_provider.js"></script>
-<script src="scripts/services/logincheck.js"></script>
 <script src="scripts/directives/customtable_directive.js"></script>
 <script src="scripts/services/lodash.js"></script>
 <!-- endbuild -->

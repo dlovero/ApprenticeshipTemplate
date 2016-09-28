@@ -8,7 +8,7 @@
  * Controller of the tusLibrosFrontEndApp
  */
 angular.module('tusLibrosFrontEndApp')
-    .controller('LoginController', function LoginController($scope, $location, UserService, CartService) {
+    .controller('LoginController', function LoginController($scope, $location, ngToast, UserService, CartService) {
 
         $scope.userId = 1;
         $scope.password = "123456";
@@ -19,7 +19,9 @@ angular.module('tusLibrosFrontEndApp')
             CartService.createCart($scope.userId, $scope.password).then(function () {
                 UserService.set_user_and_password($scope.userId, $scope.password);
                 $location.path('/main');
-            })
+            }).catch(function(){
+                ngToast.danger("User or password invalid");
+            });
         };
     });
 

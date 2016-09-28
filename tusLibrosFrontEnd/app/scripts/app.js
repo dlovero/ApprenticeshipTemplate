@@ -15,13 +15,14 @@ angular
         'ngResource',
         'ngRoute',
         'ngSanitize',
-        'ngTouch'
+        'ngTouch',
+        'ngToast'
     ])
     .config(function ($routeProvider) {
 
         $routeProvider
             .when('/', {
-                templateUrl: 'views/createCart.html',
+                templateUrl: 'views/login.html',
                 controller: 'LoginController'
             })
             .when('/login', {
@@ -42,21 +43,21 @@ angular
                 templateUrl: 'views/shopping.html',
                 controller: 'CartController',
                 resolve: {
-                    catalog: function (BookService, $location, CartService, UserService) {
+                    catalog: function (BookService, $location, ngToast, CartService, UserService) {
                         if (UserService.userId == null) {
                             return $location.path('/login');
                         }
                         return BookService.getCatalog().catch(function (response) {
-                            alert(response.data.error);
+                            ngToast.danger(response.data.error);
                             return [];
                         })
                     },
-                    cart: function (CartService, $location, UserService) {
+                    cart: function (CartService, $location, ngToast, UserService) {
                         if (UserService.userId === null) {
                             return $location.path('/login');
                         }
                         CartService.listCart().catch(function () {
-                            alert('Vuelva a ingresar para volver a comprar');
+                            ngToast.warning("Vuelva a ingresar para volver a comprar");
                             UserService.logOut();
                             $location.path("/login");
                         });
@@ -79,12 +80,12 @@ angular
                 templateUrl: 'views/all_purchases.html',
                 controller: 'UserController',
                 resolve: {
-                    allPurchases: function (UserService, $location) {
+                    allPurchases: function (UserService, ngToast, $location) {
                         if (UserService.userId === null) {
                             return $location.path('/login');
                         }
                         return UserService.listPurchases().catch(function (response) {
-                            alert(response.data.error);
+                            ngToast.danger(response.data.error);
                             return [];
                         })
                     }
@@ -96,4 +97,10 @@ angular
             .otherwise({
                 redirectTo: '/404.html'
             });
+    })
+    .config(function (ngToastProvider) {
+        ngToastProvider.configure({
+            verticalPosition: 'top',
+            horizontalPosition: 'center'
+        });
     })

@@ -1,4 +1,5 @@
 <h3 class='modal-header'>CATALOGO</h3>
+<toast></toast>
 <table class="table">
     <thead>
     <tr>
@@ -12,7 +13,7 @@
         <td>{{book.title}}</td>
         <td>{{book.isbn}}</td>
         <td>{{book.price}}</td>
-        <td><input required type="number" min="1" ng-model="amount"/>
+        <td><input required type="number" min="1" max=100000 ng-model="amount"/>
             <button ng-disabled="amount === undefined" ng-click="addBook(book,amount)">Agregar</button>
         </td>
     </tr>

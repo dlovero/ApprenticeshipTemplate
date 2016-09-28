@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('tusLibrosFrontEndApp')
-    .controller('CreditCardController', function CreditCardController($scope, $location, CartService) {
+    .controller('CreditCardController', function CreditCardController($scope, $location,ngToast, CartService) {
         $scope.creditCardOwner = "";
         $scope.creditCardNumber = "";
         $scope.expirationDate = null;
@@ -10,7 +10,7 @@ angular.module('tusLibrosFrontEndApp')
                 .then(function () {
                     $location.path("/all_purchases");
                 }).catch(function (response) {
-                alert(response.data.error);
+                ngToast.danger(response.data.error);
             });
         };
 

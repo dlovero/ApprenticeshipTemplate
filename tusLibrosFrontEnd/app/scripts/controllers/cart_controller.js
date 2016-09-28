@@ -8,21 +8,20 @@
  * Controller of the tusLibrosFrontEndApp
  */
 angular.module('tusLibrosFrontEndApp')
-    .controller('CartController', function ($scope, $location, catalog, cart, CartService, BookService) {
+    .controller('CartController', function ($scope, $location, ngToast, catalog, cart, CartService, BookService) {
 
         $scope.cart = cart;
 
         $scope.addBook = function addBook(bookSelected, amount) {
             CartService.addBook(bookSelected.isbn, amount).then(function () {
             }).catch(function (response) {
-                alert(response.data.error);
-                $location.path("/login");
+                ngToast.danger(response.data.error);
             })
         };
 
         $scope.getItems = function () {
             CartService.listCart().catch(function () {
-                alert('Vuelva a ingresar para volver a comprar');
+                ngToast.warning("Vuelva a ingresar para volver a comprar");
                 $location.path("/login");
             })
         };
@@ -31,7 +30,7 @@ angular.module('tusLibrosFrontEndApp')
             BookService.getCatalog().then(function (catalog_list) {
                 $scope.catalog = catalog_list
             }).catch(function (response) {
-                alert(response.data.error);
+                ngToast.danger(response.data.error);
                 $scope.catalog = [];
             })
         };
