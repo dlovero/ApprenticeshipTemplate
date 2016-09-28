@@ -15,21 +15,22 @@ class Board
     @board_positions.all? { |value| value.nil? }
   end
 
-  def put_mark_on(x, y)
-    assert_coordinates_are_inside_the_board(x, y)
-    assert_the_spot_is_empty(x, y)
+  def put_mark_on(y, x)
+    assert_game_is_not_over
+    assert_board_is_not_full
+    assert_coordinates_are_inside_the_board(y, x)
+    assert_the_spot_is_empty(y, x)
     mark = select_mark_to_put
-    @board_positions[x, y]=mark
+    @board_positions[y, x]=mark
     increase_turn
   end
 
-  def get_mark_on(x, y)
-    @board_positions[x, y]
+  def get_mark_on(y, x)
+    @board_positions[y, x]
   end
 
   def full?
-    @board_positions.all? { |value| played_mark(value)
-    }
+    @board_positions.all? { |value| played_mark(value) }
   end
 
   def played_mark(value)
@@ -38,17 +39,30 @@ class Board
 
 
   def fill_with_draw_game
-    @board_positions = Matrix.columns([['X','O','X'],['X','O','O'],['O','X','X']])
+    @board_positions = Matrix.columns([['X', 'O', 'X'], ['X', 'O', 'O'], ['O', 'X', 'X']])
+    # X X O
+    # O O X
+    # X O X
+  end
+
+  def fill_with_won_game_by_X
+    put_mark_on(0,2) #X
+    put_mark_on(1,1) #O
+    put_mark_on(1,2) #X
+    put_mark_on(2,1) #O
+    put_mark_on(2,2) #X
+    #     X
+    #   O X
+    #   O X
   end
 
   def draw?
-    full? && !winner?
+    full? && !won?
   end
 
-  def winner?
+  def won?
     any_column_has_win_sequence || any_row_has_win_sequence || any_diagonal_has_win_sequence
   end
-
 
 
   #######################################################################################################
@@ -76,20 +90,6 @@ class Board
       mark = 'O'
     end
     mark
-  end
-
-  def assert_coordinates_are_inside_the_board(x, y)
-    raise OutOfBoardGameException, 'You tried to mark a spot out of the board' if x>=LIMIT || y>=LIMIT
-  end
-
-  def assert_the_spot_is_empty(x, y)
-    raise SameSpotGameException, 'You tried to mark a spot already in use' if get_mark_on(x, y) != nil
-  end
-
-  def any_row_has_win_sequence
-    all_rows.any? do |row|
-      has_a_win_sequence(row)
-    end
   end
 
   def all_rows
@@ -140,7 +140,43 @@ class Board
     diagonal
   end
 
+  def assert_game_is_not_over
+    raise GameOverException, "Game Over" if won?
+  end
+
+  def assert_board_is_not_full
+    raise FullException, "The board is full" if full?
+  end
+
+  def assert_coordinates_are_inside_the_board(y, x)
+    raise SpotOutOfRangeException, 'You tried to mark a spot out of the board' if y>=LIMIT || x>=LIMIT
+  end
+
+  def assert_the_spot_is_empty(y, x)
+    raise SameSpotException, 'You tried to mark a spot already in use' if get_mark_on(y, x) != nil
+  end
+
+  def any_row_has_win_sequence
+    all_rows.any? do |row|
+      has_a_win_sequence(row)
+    end
+  end
+
+  class SpotOutOfRangeException < Exception
+  end
+
+  class FullException < Exception
+  end
+
+  class SameSpotException < Exception
+  end
+
+  class GameOverException < Exception
+  end
+
 end
+
+
 
 class Matrix
 
