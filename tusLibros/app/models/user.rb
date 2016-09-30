@@ -7,14 +7,6 @@ class User < ActiveRecord::Base
 
 
   def self.log_in!(hash)
-    user = User.find_by(id: hash[:id].to_i, password: hash[:password])
-    assert_valid_user(user)
-    user
+    User.find_by!(id: hash[:id], password: hash[:password])
   end
-
-
-  def self.assert_valid_user(user)
-    raise UnauthorizedException, "Couldn't find User" if user.nil?
-  end
-
 end
