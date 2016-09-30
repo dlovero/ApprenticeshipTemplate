@@ -1,59 +1,86 @@
 require 'matrix.rb'
 
-class Board
 
+class Board < ActiveRecord::Base
+
+  def set_position_to(position, value)
+
+      self.value0 = value
+
+    end
+  end
+
+  def board_positions
+    {
+        [0, 0] => self.value0,
+        [0, 1] => self.value1,
+        [0, 2] => self.value2,
+        [1, 0] => self.value3,
+        [1, 1] => self.value4,
+        [1, 2] => self.value5,
+        [2, 0] => self.value6,
+        [2, 1] => self.value7,
+        [2, 2] => self.value8
+    }
+  end
 
   LIMIT = 3
 
-  def initialize
-    @turn = 0
-    @board_positions = Matrix.build(LIMIT, LIMIT) { nil }
+  after_create :initialize_all_things
+
+  def initialize_all_things
+    self.winner = "NO WINNER"
+    self.turn = 0
+    self.value0 = 'C'
+    self.value1 = 'C'
+    self.value2 = 'C'
+    self.value3 = 'C'
+    self.value4 = 'C'
+    self.value5 = 'C'
+    self.value6 = 'C'
+    self.value7 = 'C'
+    self.value8 = 'C'
+    save!
   end
 
+  def boardPositions
+    board_positions
+  end
 
   def empty?
-    @board_positions.all? { |value| value.nil? }
+    board_positions.all? { |value| value.nil? }
   end
 
-  def put_mark_on(y, x)
-    assert_game_is_not_over
-    assert_board_is_not_full
-    assert_coordinates_are_inside_the_board(y, x)
-    assert_the_spot_is_empty(y, x)
-    mark = select_mark_to_put
-    @board_positions[y, x]=mark
+  def put_mark_on(hash)
+    execute_assertions(hash)
+    persist_mark(hash)
     increase_turn
   end
 
-  def get_mark_on(y, x)
-    @board_positions[y, x]
+  def persist_mark(hash)
+    board_positions[[hash[:y], hash[:x]]]=select_mark_to_put
+    save!
+    puts board_positions[[hash[:y], hash[:x]]]
+    puts select_mark_to_put
+  end
+
+  def execute_assertions(hash)
+    assert_game_is_not_over
+    assert_board_is_not_full
+    assert_coordinates_are_inside_the_board(hash[:y], hash[:x])
+    assert_the_spot_is_empty(hash)
+  end
+
+  def get_mark_on(hash)
+    board_positions[[hash[:y], hash[:x]]]
   end
 
   def full?
-    @board_positions.all? { |value| played_mark(value) }
+    board_positions.all? { |value| played_mark(value) }
   end
 
   def played_mark(value)
     value == 'X' || value == 'O'
-  end
-
-
-  def fill_with_draw_game
-    @board_positions = Matrix.columns([['X', 'O', 'X'], ['X', 'O', 'O'], ['O', 'X', 'X']])
-    # X X O
-    # O O X
-    # X O X
-  end
-
-  def fill_with_won_game_by_X
-    put_mark_on(0,2) #X
-    put_mark_on(1,1) #O
-    put_mark_on(1,2) #X
-    put_mark_on(2,1) #O
-    put_mark_on(2,2) #X
-    #     X
-    #   O X
-    #   O X
   end
 
   def draw?
@@ -75,25 +102,18 @@ class Board
     end
   end
 
-  def all_diagonals
-    diagonal_vectors
-  end
-
   def increase_turn
-    @turn+=1
+    self.turn+=1
+    save!
   end
 
   def select_mark_to_put
-    if @turn.even?
+    if turn.even?
       mark = 'X'
     else
       mark = 'O'
     end
     mark
-  end
-
-  def all_rows
-    @board_positions.row_vectors
   end
 
   def any_column_has_win_sequence
@@ -115,10 +135,32 @@ class Board
   end
 
   def all_columns
-    @board_positions.column_vectors
+    columns=[]
+    column=[]
+    LIMIT.times do |j|
+      LIMIT.times do |i|
+        column.push(board_positions[[j, i]])
+      end
+      columns.push column
+      column=[]
+    end
+    columns
   end
 
-  def diagonal_vectors
+  def all_rows
+    rows=[]
+    row=[]
+    LIMIT.times do |j|
+      LIMIT.times do |i|
+        row.push(board_positions[[i, j]])
+      end
+      rows.push row
+      row=[]
+    end
+    rows
+  end
+
+  def all_diagonals
     array_result = []
     array_result.push(diagonal, inverse_diagonal)
     array_result
@@ -126,17 +168,17 @@ class Board
 
   def inverse_diagonal
     diagonal = []
-    diagonal.push(@board_positions[0, 2])
-    diagonal.push(@board_positions[1, 1])
-    diagonal.push(@board_positions[2, 0])
+    diagonal.push(board_positions[[0, 2]])
+    diagonal.push(board_positions[[1, 1]])
+    diagonal.push(board_positions[[2, 0]])
     diagonal
   end
 
   def diagonal
     diagonal = []
-    diagonal.push(@board_positions[0, 0])
-    diagonal.push(@board_positions[1, 1])
-    diagonal.push(@board_positions[2, 2])
+    diagonal.push(board_positions[[0, 0]])
+    diagonal.push(board_positions[[1, 1]])
+    diagonal.push(board_positions[[2, 2]])
     diagonal
   end
 
@@ -152,8 +194,8 @@ class Board
     raise SpotOutOfRangeException, 'You tried to mark a spot out of the board' if y>=LIMIT || x>=LIMIT
   end
 
-  def assert_the_spot_is_empty(y, x)
-    raise SameSpotException, 'You tried to mark a spot already in use' if get_mark_on(y, x) != nil
+  def assert_the_spot_is_empty(hash)
+    raise SameSpotException, 'You tried to mark a spot already in use' if get_mark_on(hash) != 'C'
   end
 
   def any_row_has_win_sequence
@@ -174,14 +216,8 @@ class Board
   class GameOverException < Exception
   end
 
-end
-
-
-
-class Matrix
-
-  def []=(i, j, x)
-    @rows[i][j] = x
-  end
 
 end
+
+
+

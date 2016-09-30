@@ -42,6 +42,7 @@ class CartController < ApplicationController
   end
 
   def cart_id
+    puts params.require(:cartId)
     params.require(:cartId)
   end
 

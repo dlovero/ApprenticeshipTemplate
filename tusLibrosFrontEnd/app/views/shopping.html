@@ -23,26 +23,9 @@
 
 
 <h3 class='modal-header'>Items del carrito</h3>
-<table class="table">
-    <thead>
-    <tr>
-        <th>Title</th>
-        <th>Isbn</th>
-        <th>Cantidad</th>
-        <th>Precio</th>
-        <th>Total</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="something in cart.items">
-        <td>{{something.title}}</td>
-        <td>{{something.isbn}}</td>
-        <td>{{something.amount_of_books}}</td>
-        <td>{{something.price}}</td>
-        <td>{{something.price * something.amount_of_books}}</td>
-    </tr>
-    </tbody>
-</table>
+
+<custom-table content="cart.items" columns="['TITULO','ISBN','CANTIDAD','PRECIO']"
+              operations="['title','isbn','amount_of_books','price']"></custom-table>
 
 <a role="button" href="#/purchase">
     <button ng-disabled="cart.items.length === 0" class="btn bg-primary">Comprar</button>

@@ -1,20 +1,12 @@
 <table class="table">
     <thead>
     <tr>
-        <th>Title</th>
-        <th>Isbn</th>
-        <th>Cantidad</th>
-        <th>Precio</th>
-        <th>Total</th>
+        <th ng-repeat="column in columns">{{column}}</th>
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="something in items">
-        <td>{{something.title}}</td>
-        <td>{{something.isbn}}</td>
-        <td>{{something.amount_of_books}}</td>
-        <td>{{something.price}}</td>
-        <td>{{something.price * something.amount_of_books}}</td>
+    <tr ng-repeat="something in content">
+        <td ng-repeat="operation in operations">{{something[operation]}}</td>
     </tr>
     </tbody>
 </table>
