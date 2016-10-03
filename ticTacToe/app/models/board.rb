@@ -1,94 +1,87 @@
-require 'matrix.rb'
-
-
 class Board < ActiveRecord::Base
 
-  def set_position_to(position, value)
-
-      self.value0 = value
-
-    end
-  end
-
-  def board_positions
-    {
-        [0, 0] => self.value0,
-        [0, 1] => self.value1,
-        [0, 2] => self.value2,
-        [1, 0] => self.value3,
-        [1, 1] => self.value4,
-        [1, 2] => self.value5,
-        [2, 0] => self.value6,
-        [2, 1] => self.value7,
-        [2, 2] => self.value8
-    }
-  end
+  has_many :squares
 
   LIMIT = 3
 
-  after_create :initialize_all_things
+  EMPTY = 'EMPTY'
 
-  def initialize_all_things
-    self.winner = "NO WINNER"
+  X = 'X'
+
+  O = 'O'
+
+  NOT_WINNER = "NO WINNER"
+
+  after_create :initialize_things
+
+  def initialize_things
+    self.winner = NOT_WINNER
     self.turn = 0
-    self.value0 = 'C'
-    self.value1 = 'C'
-    self.value2 = 'C'
-    self.value3 = 'C'
-    self.value4 = 'C'
-    self.value5 = 'C'
-    self.value6 = 'C'
-    self.value7 = 'C'
-    self.value8 = 'C'
+    create_squares
     save!
   end
 
-  def boardPositions
-    board_positions
+
+  def create_squares
+    (0...LIMIT).each do |x|
+      (0...LIMIT).each do |y|
+        Square.create!(x: x, y: y, mark: EMPTY, board_id: id)
+      end
+    end
   end
 
+
   def empty?
-    board_positions.all? { |value| value.nil? }
+    squares.all? { |square| square.empty_mark? }
   end
 
   def put_mark_on(hash)
-    execute_assertions(hash)
-    persist_mark(hash)
+    execute_validations(hash[:x], hash[:y])
+    put_mark!(hash[:x], hash[:y])
     increase_turn
+    set_winner_if_has_one
   end
 
-  def persist_mark(hash)
-    board_positions[[hash[:y], hash[:x]]]=select_mark_to_put
-    save!
-    puts board_positions[[hash[:y], hash[:x]]]
-    puts select_mark_to_put
+  def set_winner_if_has_one
+    update!(winner: "X WON") if X_won?
+    update!(winner: "O WON") if O_won?
   end
 
-  def execute_assertions(hash)
+  def put_mark!(x, y)
+    squares.find_by!(x: x, y: y).put_mark_on_square(select_mark_to_put)
+    squares.reload
+  end
+
+  def execute_validations(x, y)
+    assert_coordinates_are_inside_the_board(x, y)
     assert_game_is_not_over
     assert_board_is_not_full
-    assert_coordinates_are_inside_the_board(hash[:y], hash[:x])
-    assert_the_spot_is_empty(hash)
+    assert_the_spot_is_empty(x, y)
   end
 
-  def get_mark_on(hash)
-    board_positions[[hash[:y], hash[:x]]]
+  def get_mark_on(x, y)
+    assert_coordinates_are_inside_the_board(x, y)
+    squares.find_by!(x: x, y: y).mark
   end
 
   def full?
-    board_positions.all? { |value| played_mark(value) }
-  end
-
-  def played_mark(value)
-    value == 'X' || value == 'O'
+    squares.all? { |square| square.played_mark? }
   end
 
   def draw?
-    full? && !won?
+    full? && !has_winner?
   end
 
-  def won?
-    any_column_has_win_sequence || any_row_has_win_sequence || any_diagonal_has_win_sequence
+  def has_winner?
+    self.winner != NOT_WINNER
+  end
+
+  def X_won?
+    columns_have_win_sequence_for(X) || rows_have_win_sequence_for(X) || diagonals_have_win_sequence_for(X)
+  end
+
+  def O_won?
+    columns_have_win_sequence_for(O) || rows_have_win_sequence_for(O) || diagonals_have_win_sequence_for(O)
   end
 
 
@@ -96,9 +89,21 @@ class Board < ActiveRecord::Base
 
   private
 
-  def any_diagonal_has_win_sequence
-    all_diagonals.all? do |diagonal|
-      has_a_win_sequence(diagonal)
+  def diagonals_have_win_sequence_for(mark)
+    detect_if_all_are_the_same(all_diagonals,mark)
+  end
+
+  def columns_have_win_sequence_for(mark)
+    detect_if_all_are_the_same(all_columns, mark)
+  end
+
+  def rows_have_win_sequence_for(mark)
+    detect_if_all_are_the_same(all_rows, mark)
+  end
+
+  def detect_if_all_are_the_same(vectors, mark)
+    vectors.any? do |vector|
+      has_a_win_sequence(vector, mark)
     end
   end
 
@@ -109,37 +114,23 @@ class Board < ActiveRecord::Base
 
   def select_mark_to_put
     if turn.even?
-      mark = 'X'
+      X
     else
-      mark = 'O'
-    end
-    mark
-  end
-
-  def any_column_has_win_sequence
-    all_columns.any? do |column|
-      has_a_win_sequence(column)
+      O
     end
   end
 
-  def has_a_win_sequence(array)
-    all_marks_are_X(array) || all_marks_are_O(array)
+  def has_a_win_sequence(array, mark)
+    array.all? { |value| value == mark }
   end
 
-  def all_marks_are_X(array)
-    array.all? { |value| value == 'X' }
-  end
-
-  def all_marks_are_O(array)
-    array.all? { |value| value == 'O' }
-  end
 
   def all_columns
     columns=[]
     column=[]
-    LIMIT.times do |j|
-      LIMIT.times do |i|
-        column.push(board_positions[[j, i]])
+    (0...LIMIT).each do |x|
+      (0...LIMIT).each do |y|
+        column.push(get_mark_on(x, y))
       end
       columns.push column
       column=[]
@@ -150,9 +141,9 @@ class Board < ActiveRecord::Base
   def all_rows
     rows=[]
     row=[]
-    LIMIT.times do |j|
-      LIMIT.times do |i|
-        row.push(board_positions[[i, j]])
+    LIMIT.times do |y|
+      LIMIT.times do |x|
+        row.push(get_mark_on(x, y))
       end
       rows.push row
       row=[]
@@ -168,40 +159,34 @@ class Board < ActiveRecord::Base
 
   def inverse_diagonal
     diagonal = []
-    diagonal.push(board_positions[[0, 2]])
-    diagonal.push(board_positions[[1, 1]])
-    diagonal.push(board_positions[[2, 0]])
+    diagonal.push(get_mark_on(2, 2))
+    diagonal.push(get_mark_on(1, 1))
+    diagonal.push(get_mark_on(0, 0))
     diagonal
   end
 
   def diagonal
     diagonal = []
-    diagonal.push(board_positions[[0, 0]])
-    diagonal.push(board_positions[[1, 1]])
-    diagonal.push(board_positions[[2, 2]])
+    diagonal.push(get_mark_on(0, 2))
+    diagonal.push(get_mark_on(1, 1))
+    diagonal.push(get_mark_on(2, 0))
     diagonal
   end
 
   def assert_game_is_not_over
-    raise GameOverException, "Game Over" if won?
+    raise GameOverException, "Game Over" if has_winner?
   end
 
   def assert_board_is_not_full
     raise FullException, "The board is full" if full?
   end
 
-  def assert_coordinates_are_inside_the_board(y, x)
-    raise SpotOutOfRangeException, 'You tried to mark a spot out of the board' if y>=LIMIT || x>=LIMIT
+  def assert_coordinates_are_inside_the_board(x, y)
+    raise SpotOutOfRangeException, 'You tried to mark a spot out of the board' if x>=LIMIT || y>=LIMIT
   end
 
-  def assert_the_spot_is_empty(hash)
-    raise SameSpotException, 'You tried to mark a spot already in use' if get_mark_on(hash) != 'C'
-  end
-
-  def any_row_has_win_sequence
-    all_rows.any? do |row|
-      has_a_win_sequence(row)
-    end
+  def assert_the_spot_is_empty(x, y)
+    raise SameSpotException, 'You tried to mark a spot already in use' if get_mark_on(x, y) != 'EMPTY'
   end
 
   class SpotOutOfRangeException < Exception
