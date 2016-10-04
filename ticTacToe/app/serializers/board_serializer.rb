@@ -1,3 +1,4 @@
 class BoardSerializer < ActiveModel::Serializer
-  attributes :boardPositions, :id, :turn, :winner
+  attributes :id, :turn, :winner
+  has_many :squares
 end

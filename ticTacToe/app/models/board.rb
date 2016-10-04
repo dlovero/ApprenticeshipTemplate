@@ -21,7 +21,6 @@ class Board < ActiveRecord::Base
     save!
   end
 
-
   def create_squares
     (0...LIMIT).each do |x|
       (0...LIMIT).each do |y|
@@ -45,6 +44,7 @@ class Board < ActiveRecord::Base
   def set_winner_if_has_one
     update!(winner: "X WON") if X_won?
     update!(winner: "O WON") if O_won?
+    update!(winner: "DRAW") if draw?
   end
 
   def put_mark!(x, y)
@@ -90,7 +90,7 @@ class Board < ActiveRecord::Base
   private
 
   def diagonals_have_win_sequence_for(mark)
-    detect_if_all_are_the_same(all_diagonals,mark)
+    detect_if_all_are_the_same(all_diagonals, mark)
   end
 
   def columns_have_win_sequence_for(mark)
@@ -200,7 +200,6 @@ class Board < ActiveRecord::Base
 
   class GameOverException < Exception
   end
-
 
 end
 

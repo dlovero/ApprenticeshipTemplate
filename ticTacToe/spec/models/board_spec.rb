@@ -54,6 +54,10 @@ RSpec.describe Board, type: :model do
         expect(a_board).to be_draw
       end
 
+      it 'should have draw state' do
+        expect(a_board.winner).to eq "DRAW"
+      end
+
       it 'should raise an exception if someone tries to score' do
         expect { a_board.put_mark_on({y: 2, x: 1}) }.to raise_error(Board::FullException)
       end
