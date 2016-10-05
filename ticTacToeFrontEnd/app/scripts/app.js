@@ -22,7 +22,11 @@ angular
       .when('/', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl',
-        controllerAs: 'main'
+        resolve: {
+          board: function(BoardService){
+            return BoardService.new();
+          }
+        }
       })
       .otherwise({
         redirectTo: '/'

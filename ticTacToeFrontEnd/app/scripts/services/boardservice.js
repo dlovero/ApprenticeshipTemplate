@@ -8,6 +8,10 @@
  * Service in the ticTacToeFrontEndApp.
  */
 angular.module('ticTacToeFrontEndApp')
-  .service('BoardService', function () {
-    // AngularJS will instantiate a singleton by calling "new" on this function
-  });
+    .service('BoardService', function (Board) {
+        var self = this;
+
+        self.new = function () {
+            return Board.new();
+        };
+    });
