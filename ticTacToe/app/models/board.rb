@@ -54,8 +54,8 @@ class Board < ActiveRecord::Base
 
   def execute_validations(x, y)
     assert_coordinates_are_inside_the_board(x, y)
-    assert_game_is_not_over
     assert_board_is_not_full
+    assert_game_is_not_over
     assert_the_spot_is_empty(x, y)
   end
 

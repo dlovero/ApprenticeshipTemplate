@@ -50,10 +50,6 @@ RSpec.describe Board, type: :model do
          expect(a_board).to be_full
       end
 
-      it 'should be draw' do
-        expect(a_board).to be_draw
-      end
-
       it 'should have draw state' do
         expect(a_board.winner).to eq "DRAW"
       end

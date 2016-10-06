@@ -5,7 +5,7 @@ class BoardController < ApplicationController
   end
 
   def put_mark
-    board_found = Board.find_by!(board_id)
+    board_found = Board.find(board_id.to_i)
     board_found.put_mark_on(mark_coordinates)
     render json: board_found, status: :ok
   end
