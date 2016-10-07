@@ -42,8 +42,8 @@ class Board < ActiveRecord::Base
   end
 
   def set_winner_if_has_one
-    update!(winner: "X WON") if X_won?
-    update!(winner: "O WON") if O_won?
+    update!(winner: "X WON") if won?(X)
+    update!(winner: "O WON") if won?(O)
     update!(winner: "DRAW") if draw?
   end
 
@@ -76,13 +76,6 @@ class Board < ActiveRecord::Base
     self.winner != NOT_WINNER
   end
 
-  def X_won?
-    columns_have_win_sequence_for(X) || rows_have_win_sequence_for(X) || diagonals_have_win_sequence_for(X)
-  end
-
-  def O_won?
-    columns_have_win_sequence_for(O) || rows_have_win_sequence_for(O) || diagonals_have_win_sequence_for(O)
-  end
 
 
   #######################################################################################################
@@ -141,8 +134,8 @@ class Board < ActiveRecord::Base
   def all_rows
     rows=[]
     row=[]
-    LIMIT.times do |y|
-      LIMIT.times do |x|
+    (0...LIMIT).each do |y|
+      (0...LIMIT).each do |x|
         row.push(get_mark_on(x, y))
       end
       rows.push row
@@ -171,6 +164,10 @@ class Board < ActiveRecord::Base
     diagonal.push(get_mark_on(1, 1))
     diagonal.push(get_mark_on(2, 0))
     diagonal
+  end
+
+  def won?(mark)
+    columns_have_win_sequence_for(mark) || rows_have_win_sequence_for(mark) || diagonals_have_win_sequence_for(mark)
   end
 
   def assert_game_is_not_over

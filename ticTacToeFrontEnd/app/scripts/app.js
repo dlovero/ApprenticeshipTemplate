@@ -36,6 +36,6 @@ angular
     .config(function (ngToastProvider) {
         ngToastProvider.configure({
             verticalPosition: 'top',
-            horizontalPosition: 'left'
+            horizontalPosition: 'center'
         });
     });

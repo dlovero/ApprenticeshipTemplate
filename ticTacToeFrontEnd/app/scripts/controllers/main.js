@@ -33,25 +33,34 @@ angular.module('ticTacToeFrontEndApp')
             }
         };
 
-        $scope.putMark = function putMark(xCoor, yCoor) {
-            var mark = new Mark();
+
+        self.realizePutMarkAction = function realizePutMarkAction(mark, xCoor, yCoor) {
             mark.position = {x: xCoor, y: yCoor};
             mark.$putMark({id: _.toInteger($scope.board.id)}).then(function (board) {
-                if (!$scope.hasWinner()) {
-                    $scope.board = board;
-                    self.checkForWinnerAndAlert();
-                }
+                $scope.board = board;
+                self.checkForWinnerAndAlert();
             }).catch(function () {
                 ngToast.danger('GAME IS ALREADY OVER') //TODO: IMPROVE THIS
             });
         };
 
+        $scope.emptySquare = function emptySquare(x, y) {
+            return $scope.findSquare(x, y).mark === 'EMPTY'
+        };
+
+        $scope.putMark = function putMark(xCoor, yCoor) {
+            var mark = new Mark();
+            if (!$scope.hasWinner() || $scope.emptySquare(xCoor, yCoor)) {
+                self.realizePutMarkAction(mark, xCoor, yCoor);
+            }
+        };
+
         $scope.mapToUrl = function (square) {
             var mapper = {
-                'X': 'http://freevector.co/wp-content/uploads/2014/08/63694-delete-cross-200x200.png',
-                'O': 'http://freevector.co/wp-content/uploads/2014/04/64299-circumference-200x200.png',
-                'EMPTY': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Tv_blank.svg/2000px-Tv_blank.svg.png'
+                'X': '/images/cross.png',
+                'O': '/images/circle.png',
+                'EMPTY': '/images/blank.png'
             };
             return mapper[square.mark];
-        }
+        };
     });

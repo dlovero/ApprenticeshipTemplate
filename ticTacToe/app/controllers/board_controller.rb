@@ -10,7 +10,6 @@ class BoardController < ApplicationController
     render json: board_found, status: :ok
   end
 
-
   private
 
   def board_id
