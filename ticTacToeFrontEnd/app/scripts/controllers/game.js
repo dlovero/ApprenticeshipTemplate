@@ -33,7 +33,6 @@ angular.module('ticTacToeFrontEndApp')
             }
         };
 
-
         self.realizePutMarkAction = function realizePutMarkAction(mark, xCoor, yCoor) {
             mark.position = {x: xCoor, y: yCoor};
             mark.$putMark({id: _.toInteger($scope.board.id)}).then(function (board) {

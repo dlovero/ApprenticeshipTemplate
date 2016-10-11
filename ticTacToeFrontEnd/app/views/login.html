@@ -1,0 +1,12 @@
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <h2>Login</h2>
+        <form name="form" ng-submit="login()" role="form">
+            <label>Ingrese su usuario</label>
+            <input required name="username" placeholder="Username" class="form-control" type="text" ng-model="username"/>
+            <button ng-disabled="form.$invalid" type="submit" class="btn btn-primary">Enter</button>
+        </form>
+        <label>¿No tiene usuario?</label>
+        <a href="#/register" class="btn-primary btn-xs"  role="button">Registrarse</a>
+    </div>
+</div>
