@@ -1,10 +1,12 @@
 Rails.application.routes.draw do
 
+  get 'users/:username' => 'user#login'
+
+  post 'users/:username' => 'user#create_user'
 
   post '/boards' => 'board#new_game'
 
-  post '/boards/:id/putMark' => 'board#put_mark'
-
+  post '/boards/:id/marks' => 'board#put_mark'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

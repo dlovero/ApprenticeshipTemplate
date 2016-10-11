@@ -20,17 +20,25 @@ angular
     ])
     .config(function ($routeProvider) {
         $routeProvider
-            .when('/', {
-                templateUrl: 'views/main.html',
-                controller: 'MainCtrl',
+            .when('/game', {
+                templateUrl: 'views/game.html',
+                controller: 'GameController',
                 resolve: {
                     board: function (BoardService) {
                         return BoardService.new();
                     }
                 }
             })
+            .when('/login', {
+                templateUrl: 'views/login.html',
+                controller: 'UserController'
+            })
+            .when('/register', {
+                templateUrl: 'views/register.html',
+                controller: 'UserController'
+            })
             .otherwise({
-                redirectTo: '/'
+                redirectTo: '/login'
             });
     })
     .config(function (ngToastProvider) {

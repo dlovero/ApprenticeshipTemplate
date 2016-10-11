@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161003135219) do
+ActiveRecord::Schema.define(version: 20161011190949) do
 
   create_table "boards", force: :cascade do |t|
     t.integer "turn"
@@ -23,6 +23,10 @@ ActiveRecord::Schema.define(version: 20161003135219) do
     t.integer "y"
     t.string  "mark"
     t.integer "board_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "username"
   end
 
 end
