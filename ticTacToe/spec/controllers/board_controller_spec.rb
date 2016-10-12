@@ -3,15 +3,10 @@ require 'rails_helper'
 RSpec.describe BoardController, type: :controller do
 
   context 'When starting a new game' do
-    before do
-      post :new_game
-    end
+    let(:player_x) { User.create! }
+    let(:player_o) { User.create! }
+    let!(:a_board) { Board.create!(player_x: player_x, player_o: player_o) }
     let(:id) { 1 }
-
-    it 'it should return' do
-      expect(response).to have_http_status :ok
-      expect(JSON(response.body)).to eq({"squares" => [{"x" => 0, "y" => 0, "mark" => "EMPTY"}, {"x" => 0, "y" => 1, "mark" => "EMPTY"}, {"x" => 0, "y" => 2, "mark" => "EMPTY"}, {"x" => 1, "y" => 0, "mark" => "EMPTY"}, {"x" => 1, "y" => 1, "mark" => "EMPTY"}, {"x" => 1, "y" => 2, "mark" => "EMPTY"}, {"x" => 2, "y" => 0, "mark" => "EMPTY"}, {"x" => 2, "y" => 1, "mark" => "EMPTY"}, {"x" => 2, "y" => 2, "mark" => "EMPTY"}], "id" => 1, "turn" => 0, "winner" => "NO WINNER"})
-    end
 
     context 'and someones mark on 0,0' do
       before do
@@ -44,7 +39,7 @@ RSpec.describe BoardController, type: :controller do
 
       it 'should respond the board with the draw' do
         expect(response).to have_http_status :ok
-        expect(JSON(response.body)).to eq({"id" => 1, "turn" => 9, "winner" => "DRAW", "squares" => [{"x"=>0, "y"=>0, "mark"=>"O"}, {"x"=>0, "y"=>1, "mark"=>"X"}, {"x"=>0, "y"=>2, "mark"=>"O"}, {"x"=>1, "y"=>0, "mark"=>"O"}, {"x"=>1, "y"=>1, "mark"=>"X"}, {"x"=>1, "y"=>2, "mark"=>"X"}, {"x"=>2, "y"=>0, "mark"=>"X"}, {"x"=>2, "y"=>1, "mark"=>"O"}, {"x"=>2, "y"=>2, "mark"=>"X"}]})
+        expect(JSON(response.body)).to eq({"id" => 1, "turn" => 9, "winner" => "DRAW", "squares" => [{"x" => 0, "y" => 0, "mark" => "O"}, {"x" => 0, "y" => 1, "mark" => "X"}, {"x" => 0, "y" => 2, "mark" => "O"}, {"x" => 1, "y" => 0, "mark" => "O"}, {"x" => 1, "y" => 1, "mark" => "X"}, {"x" => 1, "y" => 2, "mark" => "X"}, {"x" => 2, "y" => 0, "mark" => "X"}, {"x" => 2, "y" => 1, "mark" => "O"}, {"x" => 2, "y" => 2, "mark" => "X"}]})
       end
     end
 

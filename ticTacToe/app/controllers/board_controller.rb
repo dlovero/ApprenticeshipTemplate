@@ -1,9 +1,4 @@
 class BoardController < ApplicationController
-  belongs_to :user
-
-  def new_game
-    render json: Board.create!, status: :ok
-  end
 
   def put_mark
     board_found = Board.find(board_id.to_i)

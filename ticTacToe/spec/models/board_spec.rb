@@ -5,7 +5,9 @@ require 'rails_helper'
 RSpec.describe Board, type: :model do
 
   context 'When having a new game' do
-    let(:a_board) { Board.create! }
+    let(:player_x){User.create!}
+    let(:player_o){User.create!}
+    let(:a_board) { Board.create!(player_x: player_x, player_o: player_o) }
 
     it 'should be empty' do
       expect(a_board).to be_empty

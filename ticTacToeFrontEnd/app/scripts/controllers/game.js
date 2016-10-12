@@ -8,7 +8,7 @@
  * Controller of the ticTacToeFrontEndApp
  */
 angular.module('ticTacToeFrontEndApp')
-    .controller('GameController', function ($scope, board, _, Mark, ngToast) {
+      .controller('GameController', function ($scope, board, _, Mark, ngToast) {
 
         var self = this;
 

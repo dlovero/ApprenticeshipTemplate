@@ -1,6 +1,9 @@
 class Board < ActiveRecord::Base
 
   has_many :squares
+  belongs_to :player_x, :class_name => 'User'
+  belongs_to :player_o, :class_name => 'User'
+  has_many :users
 
   LIMIT = 3
 

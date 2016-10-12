@@ -1,22 +1,16 @@
 class Square < ActiveRecord::Base
   belongs_to :board
 
-  EMPTY = 'EMPTY'
-
-  O = 'O'
-
-  X = 'X'
-
   def put_mark_on_square(mark)
     update!(mark: mark)
   end
 
   def empty_mark?
-    self.mark == EMPTY
+    self.mark == Board::EMPTY
   end
 
   def played_mark?
-    self.mark == X || self.mark == O
+    self.mark == Board::X || self.mark == Board::O
   end
 
 end
