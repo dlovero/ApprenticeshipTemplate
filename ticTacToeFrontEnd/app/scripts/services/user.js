@@ -8,6 +8,6 @@
  * Factory in the ticTacToeFrontEndApp.
  */
 angular.module('ticTacToeFrontEndApp')
-  .factory('User', function (BACKEND_URL) {
+  .factory('User', function (BACKEND_URL, $resource) {
      return $resource(BACKEND_URL + 'users/:username', {username: '@username'},{})
   });

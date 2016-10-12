@@ -37,6 +37,9 @@ angular
                 templateUrl: 'views/register.html',
                 controller: 'UserController'
             })
+            .when('/welcome', {
+                templateUrl: 'views/welcome.html'
+            })
             .otherwise({
                 redirectTo: '/login'
             });

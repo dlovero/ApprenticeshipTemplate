@@ -1,4 +1,5 @@
 class BoardController < ApplicationController
+  belongs_to :user
 
   def new_game
     render json: Board.create!, status: :ok
